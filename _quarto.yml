@@ -9,7 +9,7 @@ book:
   chapters:
     - index.qmd
     - introduction_to_spatial_data.qmd
-    - introduction_to_R.qmd
+    - Intro.qmd
     - summary.qmd
     - references.qmd
 
