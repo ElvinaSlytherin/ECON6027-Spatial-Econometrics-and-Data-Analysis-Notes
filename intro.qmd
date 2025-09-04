@@ -298,7 +298,9 @@ plot(world_coffee["coffee_production_2016"])
 ```
 
 ::: callout-note
-Notice the joining is done using the shared “key” variable “name_long”. By default, `dplyr` uses all variables with matching names. In this case, both world_coffee and world objects contained a variable called name_long, explaining the message Joining, by = "name_long". Where variable names are not the same, we have two options: \* 1. Rename the key variable in one of the objects so they match, or \* 2. Use the by argument to specify the joining variables.
+Notice the joining is done using the shared “key” variable “name_long”. By default, `dplyr` uses all variables with matching names. In this case, both world_coffee and world objects contained a variable called name_long, explaining the message Joining, by = "name_long".
+
+Where variable names are not the same, we have two options: *(i)* Rename the key variable in one of the objects so they match, or *(ii)* Use the by argument to specify the joining variables.
 
 The difference between the two functions is that `left_join()` fully preserves the features of the left dataset while `inner_join()` will find the common elements belonging to both datasets. We may choose the desired function based on the final dataset we need.
 :::
