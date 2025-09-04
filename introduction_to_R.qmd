@@ -1,0 +1,311 @@
+# Introduction to R
+
+## Install 'sf' package
+
+When we start up our project, we will need to make sure we install and load the necessary packages. The 'sf' package should already be installed so we just need to load the 'sf' package from our library using the following code:
+
+```{r}
+is.element('sf', installed.packages())
+library(sf)
+```
+
+## Reading a shapefile, geojson, and csv data to R
+
+When we load the dataset, we will need to use the *st_read()* command so as to read the file to R. This applies for both shapefiles and geojson files.
+
+### Reading shapefile
+
+```{r}
+sg_pa = st_read("datasets/MP14_SUBZONE_WEB_PL.shp")
+```
+
+### Reading geojson file
+
+```{r}
+sg_spt = st_read("datasets/SportSGSportFacilitiesGEOJSON.geojson")
+```
+
+### Reading csv data
+
+```{r}
+fav = read.csv("datasets/1c_data.csv")
+class(fav)
+plot(fav)
+```
+
+::: callout-tip
+It is important to note that while csv files are a spatial dataset, they do not have any "spatial awareness". Thus, we need to use the command `st_as_sf` with the "coords" argument that follows the cartesian coordinates convention (x,y).
+:::
+
+```{r}
+library(sf)
+(fav.sf = st_as_sf(fav, coords=c("lon_x","lat_y")))
+plot(st_geometry(fav.sf), main="Bucket List")
+```
+
+![CSV Data](images/W1_csv_data.png)
+
+::: callout-note
+-   One 'sfg' object contains only a [single]{style="color: yellow;"} simple feature geometry
+-   A simple feature geometry column [('sfc')]{style="color: purple;"} is a list of \['sfg'{style="color: red;"} objects, which is additionally able to contain information about the coordinate system in use
+
+This is important since 'sfc' represents the geometry column in **sf** data frames.
+:::
+
+::: callout-tip
+## How do I ensure R reads my files properly?
+
+In case that your data set is not in the same folder as the Quarto file, use the file path instead to ensure that the file is read properly in R.
+:::
+
+## Inspecting our shapefile or geojson file
+
+Now that we have loaded our dataset, we will need to inspect the data as we will need to make sure that there are no false entries. These false entries could be due to overlapping polygons. As a habit, we should always check the validity especially if the dataset is downloaded from the Internet.
+
+::: callout-important
+Always validate the dataset before we do anything else!
+:::
+
+```{r}
+class(sg_pa)
+summary(sg_pa)
+head(sg_pa)
+table(st_is_valid(sg_pa))
+```
+
+::: callout-note
+## What do the commands mean?
+
+-   `class(sg_pa)`: Used to determine the class of the object, e.g., data.frame.
+-   `summary(sg_pa)`: Calculates a 6-number summary including the minimum value, first quartile (25th percentile), median (50th percentile), mean, third quartile (75th percentile), and maximum value.
+-   `head(sg_pa)`: Inspects the first 6 rows of the dataset.
+-   `table(st_is_valid(sg_pa))`: Creates a table for the object and checks the validity of the object.
+:::
+
+### Validating objects due to false entries
+
+If there are false entries, use the command *st_make_valid()* to validate the object.
+
+```{r}
+sg_pa = st_make_valid(sg_pa)
+table(st_is_valid(sg_pa))
+```
+
+::: callout-note
+## What do the commands mean?
+
+-   `sg_pa = st_make_valid(sg_pa)`: Used for making the object valid.
+-   `table(st_is_valid(sg_pa))`: Used for creating a table from the newly validated object.
+:::
+
+## Visualize the shapefile and geojson file
+
+Now, we can visualize our dataset in the form of maps by using the *plot()* command. If there are many attributes in the dataset, we can use the *max.plot()* command together with the *plot()* command to limit the number of maps generated. If we wish to plot a map using a specific attribute, then we need to specify the attribute in the *plot()* command.
+
+### Shapefile
+
+```{r}
+plot(sg_pa, max.plot = 12)
+plot(sg_pa["PLN_AREA_N"])
+```
+
+::: callout-note
+## What do the commands mean?
+
+-   `plot(sg_pa, max.plot = 12)`: Plots our object; the `max.plot` function generates the number of maps specified (e.g., 12).
+-   `plot(sg_pa["PLN_AREA_N"])`: Plots our object based on the specified attribute we want (e.g., `PLN_AREA_N`).
+:::
+
+### geojson file
+
+Before we can plot our dataset, we will need to extract the geometry for our geojson file. This is so that we can seoarate the spatial data freom other attribute information, allowing us to visualize, process, and interact with the geographic shapes (points, lines, polygons) using R. This process is necessary because geometry is what defines the map features, and extracting it provides a clean dataset for tasks like rendering maps, performing spatial analysis, or exchanging data between different platforms.
+
+```{r}
+st_geometry(sg_spt)
+```
+
+::: callout-note
+## What do the commands mean?
+
+-   `st_geometry(sg_spt)`: Extracts the geometry.
+:::
+
+After extracting the geometry, we can now plot the spatial data. To add colour to our plots, we can make use of the command *col = "colour"* as well as *border = "colour"* so that the plots are filled in colour. Additionally, the command *main = "title"* will create a title for the plot.
+
+```{r}
+plot(sg_spt$geometry, col = "green", border = "darkblue", main="SportSG Sport Facilities Locations")
+```
+
+Lastly, to load the plot of the dengue clusters on the Singapore map, we can make use of the library *tmap* as well as the command *tm_shape()*, which specifies the spatial data object or "shape" that serves as the base layer for creating a thematic map. Essentially, this defines the spatial context for subsequent map layers. Then, we use the *tm_polygons()* command to draw polygons on top of the map layer. Finally, to view the map that we have created, we use the command *tmap_mode()* where we can set the mode to *(i) plot*, which creates default and static maps, while *(ii) view* creates interactive maps that can be zoomed in and out, allow for changing background tiles (basemaps), or click on map objects to get some additional information.
+
+```{r}
+library(tmap)
+sploc_map = tm_shape(sg_spt$geometry) + tm_polygons(col = "green")
+tmap_mode("view")
+sploc_map
+```
+
+::: callout-note
+## What do the commands mean?
+
+-   `tmap` package is used for creating thematic maps.
+-   The following commands create a base map and an interactive view:
+    -   `tm_shape`: Specifies the spatial data object for the base layer and creates polygons on top of the map layer.
+    -   `tmap_mode`: Sets the created map to be an interactive map.
+:::
+
+## Working with csv data
+
+We will need to install the package `spData` and load our csv dataset as an `sf` object. When we look at sf class datasets, we need to identify the difference between attributes and features.
+
+### Attributes vs Features
+
+Attribute data is “non-spatial” information associated with geographic (geometry) data.
+
+| Geometry Data (Spatial) | Attribute Data (Non-Spatial) |
+|----|----|
+| A bus stop’s position would typically be represented by latitude and longitude coordinates (geometry data). | The name of the bus stop is an attribute of the feature (to use Simple Features terminology) that bears no relation to its geometry. |
+| The position of a specific grid cell in raster data. | The elevation value (attribute) for that specific grid cell. |
+
+### Feature types supported by sf
+
+![Feature types supported by `sf`](images/W1_feature_sf.png)
+
+#### Geometry Column
+
+The geometry column gives the `sf` object its "spatial awareness". It is a list column that contains all the coordinates of the country polygons. When we strp the geometry data from an `sf` column, it reduces to a typical `data.frame`. We can observe this through the following example:
+
+##### Step 1: Loading and inspecting the "world" dataset
+
+```{r}
+world = st_read(system.file("shapes/world.gpkg", package="spData"))
+world
+```
+
+##### Step 2: Inspecting the dataset
+
+```{r}
+table(st_is_valid(world))
+class(world)
+dim(world) # 177 features, 11 attributes
+names(world)
+summary(world)
+head(world)
+```
+
+##### Step 3: Removing geometry column from dataset
+
+```{r}
+world$geom
+world_df = st_drop_geometry(world)
+class(world_df)
+head(world_df)
+```
+
+##### Initial plots
+
+```{r}
+# plot(world)
+plot(world[3:6]) # plot of the world for attributes 3 to 6
+```
+
+##### Basic plot of the countries and continents based on column name
+
+```{r}
+plot(world[c("name_long", "continent")]) # identify the columns using concatenate function to list into an array
+```
+
+### Spatial Dataset Manipulation
+
+In this section we will see some important ways to manipulate a spatial dataset. Most of these commands can be applied to any dataset in general.
+
+#### Subsetting using base R functions \[\] or subset()
+
+The following code chunk shows how to subset based on columns.
+
+```{r}
+world[, 7:10] # Extract columns 7 to 10
+summary(world[, 7:10]) # numerical summary of the columns
+```
+
+The following code chunk allows subsetting based on certain criterion: lad area more than 5 million square km.
+
+##### Method 1
+
+```{r}
+l_area = world$area_km2 > 5000000
+class(l_area)
+table(l_area)
+(big_countries = world[l_area, ])
+```
+
+##### Method 2
+
+```{r}
+(big_countries = subset(world, area_km2 > 5000000)) # method 2
+```
+
+Since Antartica is not a country, we will remove it from the dataset.
+
+```{r}
+(big_countries = big_countries[-7, ]) # remove Antarctica
+```
+
+In the next chunk, we will extract and highlight Asia (a specific geographic location) in a map. Using \[\] is one way to subset a dataset. Notice the resulting dataset is also an sf object.
+
+```{r}
+table(world$continent)
+asia = world[world$continent == "Asia", ] 
+plot(world["continent"], reset = F) 
+plot(asia, add = T, col = "black")
+```
+
+##### Plotting a country (e.g. Sri Lanka)
+
+```{r}
+world$name_long 
+(sl = world[world$name_long == "Sri Lanka", ])
+plot(asia$geom, main="Asia")
+plot(st_geometry(sl), col = "red", add=T)
+```
+
+plot(st_geometry()) gives an outline of the geometry column.
+
+#### Attribute data aggregation
+
+Aggregation operations summarise datasets by a ‘grouping variable’, typically an attribute column. In the following example, we aggregate the population by continent.
+
+```{r}
+(cont_pop = aggregate(pop ~ continent, FUN = sum, data = world, na.rm = T)); class(cont_pop) # output is a data.frame
+(cont_pop2 = aggregate(world['pop'], by = list(world$continent), FUN = sum, na.rm = T)); class(cont_pop2) # results in an sf output
+# (cont_pop2 = aggregate(world$pop, by = list(world$continent), FUN = sum, na.rm = T)); class(cont_pop2)
+```
+
+#### Attribute joining using "key variable"
+
+The idea is to join data from different sources. This is useful when we want to “give” spatial awareness to a dataset. In the following example, we will use the "coffee_data" dataset from `spData` and join that to the "world" dataset using the key variable "name_long".
+
+```{r}
+library(spData)
+summary(coffee_data)
+class(coffee_data)
+library(dplyr)
+# left join
+(world_coffee = left_join(world, coffee_data))
+plot(world_coffee["coffee_production_2016"])
+# inner join
+(world_coffee2 = inner_join(world, coffee_data)) 
+```
+
+::: callout-note
+Notice the joining is done using the shared “key” variable “name_long”. By default, `dplyr` uses all variables with matching names. In this case, both world_coffee and world objects contained a variable called name_long, explaining the message Joining, by = "name_long". Where variable names are not the same, we have two options: \* 1. Rename the key variable in one of the objects so they match, or \* 2. Use the by argument to specify the joining variables.
+
+The difference between the two functions is that `left_join()` fully preserves the features of the left dataset while `inner_join()` will find the common elements belonging to both datasets. We may choose the desired function based on the final dataset we need.
+:::
+
+#### Create new attributes
+
+```{r}
+world_coffee$prod_yoy = (world_coffee$coffee_production_2017/world_coffee$coffee_production_2016 - 1)*100
+world_coffee
+```

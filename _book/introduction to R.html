@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Introduction to R – ECON6027 Spatial Econometrics and Data Analysis Notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./summary.html" rel="next">
+<link href="./introduction to spatial data.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="site_libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="site_libs/leaflet-binding-2.2.2/leaflet.js"></script>
+<script src="site_libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
+<script src="site_libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./introduction to R.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">ECON6027 Spatial Econometrics and Data Analysis Notes</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction to spatial data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Spatial Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introduction to R.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#install-sf-package" id="toc-install-sf-package" class="nav-link active" data-scroll-target="#install-sf-package"><span class="header-section-number">2.1</span> Install ‘sf’ package</a></li>
+  <li><a href="#reading-a-shapefile-geojson-and-csv-data-to-r" id="toc-reading-a-shapefile-geojson-and-csv-data-to-r" class="nav-link" data-scroll-target="#reading-a-shapefile-geojson-and-csv-data-to-r"><span class="header-section-number">2.2</span> Reading a shapefile, geojson, and csv data to R</a>
+  <ul class="collapse">
+  <li><a href="#reading-shapefile" id="toc-reading-shapefile" class="nav-link" data-scroll-target="#reading-shapefile"><span class="header-section-number">2.2.1</span> Reading shapefile</a></li>
+  <li><a href="#reading-geojson-file" id="toc-reading-geojson-file" class="nav-link" data-scroll-target="#reading-geojson-file"><span class="header-section-number">2.2.2</span> Reading geojson file</a></li>
+  <li><a href="#reading-csv-data" id="toc-reading-csv-data" class="nav-link" data-scroll-target="#reading-csv-data"><span class="header-section-number">2.2.3</span> Reading csv data</a></li>
+  </ul></li>
+  <li><a href="#inspecting-our-shapefile-or-geojson-file" id="toc-inspecting-our-shapefile-or-geojson-file" class="nav-link" data-scroll-target="#inspecting-our-shapefile-or-geojson-file"><span class="header-section-number">2.3</span> Inspecting our shapefile or geojson file</a>
+  <ul class="collapse">
+  <li><a href="#validating-objects-due-to-false-entries" id="toc-validating-objects-due-to-false-entries" class="nav-link" data-scroll-target="#validating-objects-due-to-false-entries"><span class="header-section-number">2.3.1</span> Validating objects due to false entries</a></li>
+  </ul></li>
+  <li><a href="#visualize-the-shapefile-and-geojson-file" id="toc-visualize-the-shapefile-and-geojson-file" class="nav-link" data-scroll-target="#visualize-the-shapefile-and-geojson-file"><span class="header-section-number">2.4</span> Visualize the shapefile and geojson file</a>
+  <ul class="collapse">
+  <li><a href="#shapefile" id="toc-shapefile" class="nav-link" data-scroll-target="#shapefile"><span class="header-section-number">2.4.1</span> Shapefile</a></li>
+  <li><a href="#geojson-file" id="toc-geojson-file" class="nav-link" data-scroll-target="#geojson-file"><span class="header-section-number">2.4.2</span> geojson file</a></li>
+  </ul></li>
+  <li><a href="#working-with-csv-data" id="toc-working-with-csv-data" class="nav-link" data-scroll-target="#working-with-csv-data"><span class="header-section-number">2.5</span> Working with csv data</a>
+  <ul class="collapse">
+  <li><a href="#attributes-vs-features" id="toc-attributes-vs-features" class="nav-link" data-scroll-target="#attributes-vs-features"><span class="header-section-number">2.5.1</span> Attributes vs Features</a></li>
+  <li><a href="#feature-types-supported-by-sf" id="toc-feature-types-supported-by-sf" class="nav-link" data-scroll-target="#feature-types-supported-by-sf"><span class="header-section-number">2.5.2</span> Feature types supported by sf</a></li>
+  <li><a href="#spatial-dataset-manipulation" id="toc-spatial-dataset-manipulation" class="nav-link" data-scroll-target="#spatial-dataset-manipulation"><span class="header-section-number">2.5.3</span> Spatial dataset manipulation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction to R</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="install-sf-package" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="install-sf-package"><span class="header-section-number">2.1</span> Install ‘sf’ package</h2>
+<p>When we start up our project, we will need to make sure we install and load the necessary packages. The ‘sf’ package should already be installed so we just need to load the ‘sf’ package from our library using the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.element</span>(<span class="st">'sf'</span>, <span class="fu">installed.packages</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.14.0, GDAL 3.11.3, PROJ 9.6.2; sf_use_s2() is TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="reading-a-shapefile-geojson-and-csv-data-to-r" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="reading-a-shapefile-geojson-and-csv-data-to-r"><span class="header-section-number">2.2</span> Reading a shapefile, geojson, and csv data to R</h2>
+<p>When we load the dataset, we will need to use the <em>st_read()</em> command so as to read the file to R. This applies for both shapefiles and geojson files.</p>
+<section id="reading-shapefile" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="reading-shapefile"><span class="header-section-number">2.2.1</span> Reading shapefile</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sg_pa <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"datasets/MP14_SUBZONE_WEB_PL.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `MP14_SUBZONE_WEB_PL' from data source 
+  `/Users/rachelkheng/Documents/MSE/Aug Sem/ECON6027 Spacial Econometrics/ECON6027 Spatial Econometrics and Data Analysis Notes/datasets/MP14_SUBZONE_WEB_PL.shp' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 323 features and 15 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 2667.538 ymin: 15748.72 xmax: 56396.44 ymax: 50256.33
+Projected CRS: SVY21</code></pre>
+</div>
+</div>
+</section>
+<section id="reading-geojson-file" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="reading-geojson-file"><span class="header-section-number">2.2.2</span> Reading geojson file</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sg_spt <span class="ot">=</span> <span class="fu">st_read</span>(<span class="st">"datasets/SportSGSportFacilitiesGEOJSON.geojson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `SportSGSportFacilitiesGEOJSON' from data source 
+  `/Users/rachelkheng/Documents/MSE/Aug Sem/ECON6027 Spacial Econometrics/ECON6027 Spatial Econometrics and Data Analysis Notes/datasets/SportSGSportFacilitiesGEOJSON.geojson' 
+  using driver `GeoJSON'
+Simple feature collection with 35 features and 2 fields
+Geometry type: POLYGON
+Dimension:     XYZ
+Bounding box:  xmin: 103.6932 ymin: 1.285977 xmax: 103.9526 ymax: 1.435855
+z_range:       zmin: 0 zmax: 0
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="reading-csv-data" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="reading-csv-data"><span class="header-section-number">2.2.3</span> Reading csv data</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fav <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"datasets/1c_data.csv"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fav)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fav)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is important to note that while csv files are a spatial dataset, they do not have any “spatial awareness”. Thus, we need to use the command <code>st_as_sf</code> with the “coords” argument that follows the cartesian coordinates convention (x,y).</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>(<span class="at">fav.sf =</span> <span class="fu">st_as_sf</span>(fav, <span class="at">coords=</span><span class="fu">c</span>(<span class="st">"lon_x"</span>,<span class="st">"lat_y"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 9 features and 3 fields
+Geometry type: POINT
+Dimension:     XY
+Bounding box:  xmin: -116 ymin: -71 xmax: 141 ymax: 90
+CRS:           NA
+  Name num    col        geometry
+1  ABC   3    red POINT (-10 -55)
+2  DEF   6 yellow  POINT (-52 -3)
+3  GHI   3   blue POINT (-116 73)
+4  JKL   8  green  POINT (-64 90)
+5  MNO   4 purple  POINT (136 48)
+6  PQR   7  black POINT (141 -71)
+7  STU  10  white  POINT (119 -5)
+8   VW   3   pink POINT (109 -29)
+9  XYZ   1 orange  POINT (-59 31)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(fav.sf), <span class="at">main=</span><span class="st">"Bucket List"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/W1_csv_data.png" class="img-fluid figure-img"></p>
+<figcaption>CSV Data</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>One <code>sfg</code> object contains only a <span style="color: yellow;">single</span> simple feature geometry</li>
+<li>A simple feature geometry column <span style="color: purple;">(<code>sfc</code>)</span> is a list of <span style="color: red;"><code>sfg</code></span> objects, which is additionally able to contain information about the coordinate system in use</li>
+</ul>
+<p>This is important since <code>sfc</code> represents the geometry column in <strong>sf</strong> data frames.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How do I ensure R reads my files properly?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In case that your data set is not in the same folder as the Quarto file, use the file path instead to ensure that the file is read properly in R.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="inspecting-our-shapefile-or-geojson-file" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="inspecting-our-shapefile-or-geojson-file"><span class="header-section-number">2.3</span> Inspecting our shapefile or geojson file</h2>
+<p>Now that we have loaded our dataset, we will need to inspect the data as we will need to make sure that there are no false entries. These false entries could be due to overlapping polygons. As a habit, we should always check the validity especially if the dataset is downloaded from the Internet.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always validate the dataset before we do anything else!</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(sg_pa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sg_pa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    OBJECTID       SUBZONE_NO      SUBZONE_N          SUBZONE_C        
+ Min.   :  1.0   Min.   : 1.000   Length:323         Length:323        
+ 1st Qu.: 81.5   1st Qu.: 2.000   Class :character   Class :character  
+ Median :162.0   Median : 4.000   Mode  :character   Mode  :character  
+ Mean   :162.0   Mean   : 4.625                                        
+ 3rd Qu.:242.5   3rd Qu.: 6.500                                        
+ Max.   :323.0   Max.   :17.000                                        
+    CA_IND           PLN_AREA_N         PLN_AREA_C          REGION_N        
+ Length:323         Length:323         Length:323         Length:323        
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+   REGION_C           INC_CRC            FMEL_UPD_D             X_ADDR     
+ Length:323         Length:323         Min.   :2014-12-05   Min.   : 5093  
+ Class :character   Class :character   1st Qu.:2014-12-05   1st Qu.:21864  
+ Mode  :character   Mode  :character   Median :2014-12-05   Median :28465  
+                                       Mean   :2014-12-05   Mean   :27257  
+                                       3rd Qu.:2014-12-05   3rd Qu.:31674  
+                                       Max.   :2014-12-05   Max.   :50425  
+     Y_ADDR        SHAPE_Leng        SHAPE_Area                geometry  
+ Min.   :19579   Min.   :  871.6   Min.   :   39438   MULTIPOLYGON :323  
+ 1st Qu.:31776   1st Qu.: 3709.6   1st Qu.:  628261   epsg:NA      :  0  
+ Median :35113   Median : 5211.9   Median : 1229894   +proj=tmer...:  0  
+ Mean   :36106   Mean   : 6524.4   Mean   : 2420882                      
+ 3rd Qu.:39869   3rd Qu.: 6942.6   3rd Qu.: 2106483                      
+ Max.   :49553   Max.   :68083.9   Max.   :69748299                      </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sg_pa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 15 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 24468.89 ymin: 28369.47 xmax: 32362.39 ymax: 30542.74
+Projected CRS: SVY21
+  OBJECTID SUBZONE_NO      SUBZONE_N SUBZONE_C CA_IND      PLN_AREA_N
+1        1          1   MARINA SOUTH    MSSZ01      Y    MARINA SOUTH
+2        2          1   PEARL'S HILL    OTSZ01      Y          OUTRAM
+3        3          3      BOAT QUAY    SRSZ03      Y SINGAPORE RIVER
+4        4          8 HENDERSON HILL    BMSZ08      N     BUKIT MERAH
+5        5          3        REDHILL    BMSZ03      N     BUKIT MERAH
+6        6          7 ALEXANDRA HILL    BMSZ07      N     BUKIT MERAH
+  PLN_AREA_C       REGION_N REGION_C          INC_CRC FMEL_UPD_D   X_ADDR
+1         MS CENTRAL REGION       CR 5ED7EB253F99252E 2014-12-05 31595.84
+2         OT CENTRAL REGION       CR 8C7149B9EB32EEFC 2014-12-05 28679.06
+3         SR CENTRAL REGION       CR C35FEFF02B13E0E5 2014-12-05 29654.96
+4         BM CENTRAL REGION       CR 3775D82C5DDBEFBD 2014-12-05 26782.83
+5         BM CENTRAL REGION       CR 85D9ABEF0A40678F 2014-12-05 26201.96
+6         BM CENTRAL REGION       CR 9D286521EF5E3B59 2014-12-05 25358.82
+    Y_ADDR SHAPE_Leng SHAPE_Area                       geometry
+1 29220.19   5267.381  1630379.3 MULTIPOLYGON (((31495.56 30...
+2 29782.05   3506.107   559816.2 MULTIPOLYGON (((29092.28 30...
+3 29974.66   1740.926   160807.5 MULTIPOLYGON (((29932.33 29...
+4 29933.77   3313.625   595428.9 MULTIPOLYGON (((27131.28 30...
+5 30005.70   2825.594   387429.4 MULTIPOLYGON (((26451.03 30...
+6 29991.38   4428.913  1030378.8 MULTIPOLYGON (((25899.7 297...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">st_is_valid</span>(sg_pa))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+FALSE  TRUE 
+    9   314 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What do the commands mean?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>class(sg_pa)</code>: Used to determine the class of the object, e.g., data.frame.</li>
+<li><code>summary(sg_pa)</code>: Calculates a 6-number summary including the minimum value, first quartile (25th percentile), median (50th percentile), mean, third quartile (75th percentile), and maximum value.</li>
+<li><code>head(sg_pa)</code>: Inspects the first 6 rows of the dataset.</li>
+<li><code>table(st_is_valid(sg_pa))</code>: Creates a table for the object and checks the validity of the object.</li>
+</ul>
+</div>
+</div>
+<section id="validating-objects-due-to-false-entries" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="validating-objects-due-to-false-entries"><span class="header-section-number">2.3.1</span> Validating objects due to false entries</h3>
+<p>If there are false entries, use the command <em>st_make_valid()</em> to validate the object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sg_pa <span class="ot">=</span> <span class="fu">st_make_valid</span>(sg_pa)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">st_is_valid</span>(sg_pa))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+TRUE 
+ 323 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What do the commands mean?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>sg_pa = st_make_valid(sg_pa)</code>: Used for making the object valid.</li>
+<li><code>table(st_is_valid(sg_pa))</code>: Used for creating a table from the newly validated object.</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="visualize-the-shapefile-and-geojson-file" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="visualize-the-shapefile-and-geojson-file"><span class="header-section-number">2.4</span> Visualize the shapefile and geojson file</h2>
+<p>Now, we can visualize our dataset in the form of maps by using the <em>plot()</em> command. If there are many attributes in the dataset, we can use the <em>max.plot()</em> command together with the <em>plot()</em> command to limit the number of maps generated. If we wish to plot a map using a specific attribute, then we need to specify the attribute in the <em>plot()</em> command.</p>
+<section id="shapefile" class="level3" data-number="2.4.1">
+<h3 data-number="2.4.1" class="anchored" data-anchor-id="shapefile"><span class="header-section-number">2.4.1</span> Shapefile</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sg_pa, <span class="at">max.plot =</span> <span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sg_pa[<span class="st">"PLN_AREA_N"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What do the commands mean?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>plot(sg_pa, max.plot = 12)</code>: Plots our object; the <code>max.plot</code> function generates the number of maps specified (e.g., 12).</li>
+<li><code>plot(sg_pa["PLN_AREA_N"])</code>: Plots our object based on the specified attribute we want (e.g., <code>PLN_AREA_N</code>).</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="geojson-file" class="level3" data-number="2.4.2">
+<h3 data-number="2.4.2" class="anchored" data-anchor-id="geojson-file"><span class="header-section-number">2.4.2</span> geojson file</h3>
+<p>Before we can plot our dataset, we will need to extract the geometry for our geojson file. This is so that we can seoarate the spatial data freom other attribute information, allowing us to visualize, process, and interact with the geographic shapes (points, lines, polygons) using R. This process is necessary because geometry is what defines the map features, and extracting it provides a clean dataset for tasks like rendering maps, performing spatial analysis, or exchanging data between different platforms.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">st_geometry</span>(sg_spt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Geometry set for 35 features 
+Geometry type: POLYGON
+Dimension:     XYZ
+Bounding box:  xmin: 103.6932 ymin: 1.285977 xmax: 103.9526 ymax: 1.435855
+z_range:       zmin: 0 zmax: 0
+Geodetic CRS:  WGS 84
+First 5 geometries:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON Z ((103.7628 1.310547 0, 103.7628 1.310...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON Z ((103.7644 1.311377 0, 103.7646 1.311...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON Z ((103.6937 1.33894 0, 103.6937 1.3389...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON Z ((103.8723 1.323252 0, 103.8723 1.323...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>POLYGON Z ((103.8774 1.306804 0, 103.8787 1.306...</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What do the commands mean?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>st_geometry(sg_spt)</code>: Extracts the geometry.</li>
+</ul>
+</div>
+</div>
+<p>After extracting the geometry, we can now plot the spatial data. To add colour to our plots, we can make use of the command <em>col = “colour”</em> as well as <em>border = “colour”</em> so that the plots are filled in colour. Additionally, the command <em>main = “title”</em> will create a title for the plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(sg_spt<span class="sc">$</span>geometry, <span class="at">col =</span> <span class="st">"green"</span>, <span class="at">border =</span> <span class="st">"darkblue"</span>, <span class="at">main=</span><span class="st">"SportSG Sport Facilities Locations"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Lastly, to load the plot of the dengue clusters on the Singapore map, we can make use of the library <em>tmap</em> as well as the command <em>tm_shape()</em>, which specifies the spatial data object or “shape” that serves as the base layer for creating a thematic map. Essentially, this defines the spatial context for subsequent map layers. Then, we use the <em>tm_polygons()</em> command to draw polygons on top of the map layer. Finally, to view the map that we have created, we use the command <em>tmap_mode()</em> where we can set the mode to <em>(i) plot</em>, which creates default and static maps, while <em>(ii) view</em> creates interactive maps that can be zoomed in and out, allow for changing background tiles (basemaps), or click on map objects to get some additional information.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>sploc_map <span class="ot">=</span> <span class="fu">tm_shape</span>(sg_spt<span class="sc">$</span>geometry) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"green"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_mode</span>(<span class="st">"view"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ℹ tmap mode set to "view".</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>sploc_map</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-b8c89eb5a0711716474f" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-b8c89eb5a0711716474f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"attributionControl":true},"calls":[{"method":"createMapPane","args":["tmap401",401]},{"method":"addLayersControl","args":[["Esri.WorldGrayCanvas","OpenStreetMap","Esri.WorldTopoMap"],"sg_spt$geometry",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addProviderTiles","args":["Esri.WorldGrayCanvas",null,"Esri.WorldGrayCanvas",{"minZoom":0,"maxZoom":18,"maxNativeZoom":17,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["OpenStreetMap",null,"OpenStreetMap",{"minZoom":0,"maxZoom":18,"maxNativeZoom":17,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addProviderTiles","args":["Esri.WorldTopoMap",null,"Esri.WorldTopoMap",{"minZoom":0,"maxZoom":18,"maxNativeZoom":17,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"pane":"tilePane"}]},{"method":"addPolygons","args":[[[[{"lng":[103.762831357532,103.76284006611,103.762909393293,103.762970134331,103.763034290081,103.763100243155,103.763167454418,103.763260723801,103.763352915255,103.763442950501,103.763528762857,103.763682688099,103.763683538692,103.762889768503,103.762769000053,103.762704212811,103.762639245846,103.762226530322,103.762159316892,103.762020397147,103.762006469226,103.761981938113,103.761983014836,103.761988577179,103.762194970121,103.762831357532],"lat":[1.31054736358854,1.31055272580958,1.31059541375474,1.31062453599477,1.31064551905346,1.31065836288488,1.31066324834648,1.31066008570009,1.31064507585085,1.3106189422598,1.31058240836034,1.31043934227904,1.30892154809939,1.30868232149686,1.30881390305009,1.30888435117428,1.30895516103706,1.30940443734816,1.30947768891543,1.30962889460807,1.30964417796134,1.30967103687036,1.30972529874286,1.31003124525233,1.31015551077503,1.31054736358854]}]],[[{"lng":[103.764384219114,103.764605651055,103.764650039144,103.764687687679,103.764836753006,103.765073437054,103.765184853987,103.765608620704,103.765585169269,103.765697311082,103.765670894477,103.765867591938,103.766087281033,103.76632405475,103.766608527476,103.766989611679,103.766941901146,103.766854296958,103.766757168022,103.766641888084,103.766484018075,103.766335941873,103.766142758371,103.766035383301,103.765919830862,103.765800773582,103.765681985258,103.765570294633,103.765547920437,103.764940664674,103.76439379235,103.764326394925,103.764319829955,103.763751672351,103.763732622239,103.763732082855,103.763730554556,103.7637534679,103.764348559328,103.764384219114],"lat":[1.31137729496485,1.31137864045603,1.31138605746741,1.31140966240886,1.3115514708044,1.31131598090647,1.31142939121661,1.31100986829122,1.31098472633115,1.31087340216251,1.3108468131401,1.31065057147209,1.31087296054948,1.31063774183352,1.31092587988124,1.31055057896303,1.31046041258846,1.31029907169211,1.3101434280323,1.31000080672631,1.30981721657829,1.3096481869468,1.30948747624087,1.30943547240617,1.30940553482995,1.30939458879968,1.30940634230999,1.30944893482344,1.30946222836697,1.31009689448308,1.310683721246,1.31075023173774,1.31075671041985,1.31131739126792,1.31134949565876,1.31135872015697,1.31138648409053,1.31137346188927,1.31137707783315,1.31137729496485]}]],[[{"lng":[103.693702605961,103.693721013008,103.694233713959,103.694406121564,103.694414105186,103.694511186395,103.694563476502,103.694698785915,103.694721785869,103.694736249638,103.694739121777,103.69473651493,103.694731121415,103.694712338514,103.694782432966,103.694861154421,103.69510666463,103.695207404207,103.695407535075,103.695493367311,103.695536414696,103.695700778586,103.695797659257,103.69581877969,103.69575659962,103.695531421856,103.695306963572,103.695083674064,103.694862182323,103.694643027471,103.694426928355,103.694214154534,103.694005604552,103.693938484225,103.693937405983,103.693622708574,103.693502742512,103.693418182082,103.693409914768,103.693366061957,103.693335238721,103.693308638759,103.693284554819,103.693264783906,103.693245551592,103.693215893682,103.693202322355,103.693191896041,103.693183985888,103.693180927774,103.693171565969,103.693168774477,103.693166433372,103.693668096567,103.693702605961],"lat":[1.33893979108182,1.3389535302971,1.33933622043947,1.33935612262301,1.33935704371876,1.33936825068007,1.33947279788961,1.33970766836896,1.33976274531514,1.33981601305158,1.33987371150119,1.33989206989835,1.33993077627849,1.33998530822857,1.33986023897479,1.33971970562101,1.33928182755459,1.33907826141177,1.33867827348998,1.33831807100597,1.33820077770244,1.33787820109807,1.33758483156214,1.33750633413942,1.33750642106884,1.33750043956769,1.33748315356295,1.33745429177205,1.33741385423133,1.33736211228078,1.33729906596227,1.33722489616464,1.33713987424887,1.33710830818633,1.33710785594381,1.3375185990839,1.3376752276759,1.33778691150992,1.33779749206875,1.33785545914412,1.33790429291233,1.33795204168841,1.33799861493825,1.33804591192497,1.3381026143052,1.33820064542038,1.33825581071028,1.3383098005105,1.33836017300806,1.33841343974235,1.33870970812971,1.33881479481014,1.33890034730153,1.33891403197482,1.33893979108182]}]],[[{"lng":[103.872252956458,103.872295376665,103.872417956683,103.87247663278,103.872542225745,103.872686171659,103.873173805491,103.873165807956,103.873154845214,103.873141186837,103.873124922684,103.873106232473,103.873085295826,103.872934786762,103.872438125849,103.872329054915,103.872322687034,103.871656875941,103.871765422178,103.871809260304,103.871839463657,103.872111727859,103.872140031497,103.872252956458],"lat":[1.32325195762473,1.323278486485,1.32335514842093,1.32339195512179,1.323301879383,1.32315627441761,1.3224721149037,1.32244606933756,1.32242110905656,1.32239759580208,1.32237580088195,1.32235608603899,1.3223330250837,1.32223978753237,1.32193546958905,1.32186997724286,1.32188031242022,1.32294891986867,1.3230162028929,1.32304345704002,1.32306223388717,1.32323179794989,1.32318133396954,1.32325195762473]}]],[[{"lng":[103.877357239552,103.878700587598,103.879121469941,103.879442669088,103.879693738391,103.879693024075,103.879708588839,103.879714440228,103.880283644144,103.880442506443,103.880820431061,103.881013161567,103.880976410544,103.880901201373,103.880821140072,103.88074062945,103.880658231937,103.880568466291,103.880161511115,103.879946127477,103.879870738776,103.879618244786,103.879508800804,103.879342927626,103.879167799415,103.879162767751,103.879089625441,103.879094477397,103.878594252355,103.878530095573,103.87846782566,103.878409688954,103.878355595613,103.878305635514,103.87825944925,103.878257604489,103.877774723399,103.877612591629,103.877494152536,103.877439978021,103.877411140471,103.877410977842,103.877347342047,103.877294148933,103.877159729565,103.877033577398,103.876954688151,103.876904372208,103.876841029431,103.876837796877,103.8768550503,103.876787520307,103.876680919617,103.876660276412,103.876747560267,103.876750308003,103.876772496976,103.876901673571,103.877060560077,103.877336035646,103.877357239552],"lat":[1.30680410822256,1.30677008277784,1.30692851974696,1.30623741931322,1.30628731659133,1.30628885221545,1.30629618270474,1.30629893909894,1.30656702368577,1.30652315901747,1.30629642769174,1.30588195379451,1.3058575366557,1.30581467121422,1.30577289109996,1.30572839789818,1.30568679869567,1.30564239609985,1.30546017432229,1.30535120243172,1.30531638580494,1.30518534808281,1.30512991256524,1.30504807063947,1.30496541494392,1.3049762674099,1.30494163159038,1.30493086956427,1.30469474910472,1.30466282619898,1.30462647187146,1.30458396778931,1.30453612788242,1.30448421825975,1.30442878154666,1.30442623398503,1.30444847279695,1.30445593939331,1.30446139480567,1.30460134888136,1.30467581385848,1.30467623348648,1.30484055492411,1.30488875848794,1.30507279902411,1.30529111482344,1.30547370739436,1.30562889722041,1.30590626691613,1.30603504847689,1.30611191915852,1.30628640570728,1.30656184352408,1.30661519777018,1.30660872552588,1.30660749644675,1.3066220952168,1.30670708514071,1.30681162237574,1.30680464488457,1.30680410822256]}]],[[{"lng":[103.885917296542,103.88594145397,103.886821224672,103.886662701994,103.885610596808,103.885583460778,103.885508705551,103.88542298861,103.885280486415,103.885276712711,103.885445998909,103.885917296542],"lat":[1.30223475636127,1.30223643525874,1.30229756884286,1.30138072759876,1.30144351265297,1.30144514107476,1.30162664857005,1.30183483504139,1.3021811191341,1.30219025329293,1.30220200651423,1.30223475636127]}]],[[{"lng":[103.850044420756,103.850040652133,103.850016255261,103.849918966991,103.849918107965,103.849715192743,103.849605501518,103.849594156256,103.849505048395,103.849465032658,103.849429460295,103.849328540738,103.849191709992,103.848924995282,103.848915447431,103.848932239109,103.848955104239,103.848970343166,103.849035165443,103.849038775018,103.849510596928,103.849838765664,103.849838793519,103.849927158205,103.849928462028,103.849928579732,103.850284798809,103.850283330537,103.850215788195,103.85021609818,103.850230802258,103.850266733572,103.850044420756],"lat":[1.36240591106072,1.36240151768522,1.36242129268522,1.36250015031104,1.36250084758186,1.36266532300192,1.36274343098191,1.36275150974534,1.36281161168757,1.36283860090151,1.36285908318375,1.36291719107557,1.36298701433656,1.36312311749066,1.36317465908327,1.36319643064011,1.36322307215897,1.3632408274438,1.36331635500406,1.36332056027437,1.36387029938735,1.36360356846169,1.36360354494804,1.36353172334176,1.3635318454219,1.36353056755433,1.36324103734922,1.36323919969137,1.36315467104666,1.36315169568594,1.36301037419064,1.36266504785478,1.36240591106072]}]],[[{"lng":[103.851865316168,103.851872473172,103.851882482904,103.851962368378,103.852007742002,103.852036585595,103.852437160988,103.852438508677,103.852436562361,103.85196444421,103.85172906592,103.851608983897,103.851603102721,103.851577942997,103.851523500004,103.85151513349,103.851640035465,103.851615505099,103.85141278934,103.851355550914,103.851287619623,103.851223102906,103.851158136959,103.851097124735,103.851042402528,103.851025240074,103.850991634013,103.850947245344,103.850841844947,103.850736533359,103.850556365414,103.850494634095,103.850435055763,103.850404867635,103.849576392667,103.849456075133,103.849732212351,103.850587554786,103.850723691741,103.850302624881,103.850159844117,103.850003604568,103.849997653381,103.849998599575,103.850222475698,103.850390867575,103.850572018937,103.850710757757,103.85079576222,103.850955886764,103.851108373311,103.851290062871,103.851393307496,103.851508682625,103.851806230534,103.851865316168],"lat":[1.35549795781487,1.35548929575804,1.35545218780297,1.35538049460663,1.35533977434585,1.35529518082024,1.35467587710756,1.35465570977185,1.35465248572839,1.35387036980981,1.35348043954951,1.35328151105119,1.35327176747409,1.3532815347998,1.35329666432275,1.35329898950664,1.35350590712789,1.35356441968843,1.35361117685535,1.35362745584263,1.35365078895031,1.35367828210682,1.35371319105271,1.3537537070268,1.35380380921538,1.35382117313726,1.35385526792033,1.35391242407305,1.35408117923162,1.35410496477747,1.35328814417543,1.35329402298413,1.35330380682133,1.3533087647608,1.353493803437,1.35352762747248,1.35477926589477,1.35458861991026,1.35520666153316,1.3553005375587,1.355475080882,1.35550992893673,1.35551125658482,1.35551207683674,1.35570614553597,1.35581747159998,1.35590682150678,1.35595719360296,1.35598459522722,1.35601606593891,1.35602058663876,1.35597663318213,1.35590717722744,1.35582180436425,1.35555161149281,1.35549795781487]}]],[[{"lng":[103.747781014088,103.7480128145,103.748161990185,103.748561566912,103.748561037247,103.748579520656,103.74858517413,103.748710211467,103.748770363598,103.748746334988,103.748861825233,103.748756097524,103.748163772204,103.748089609935,103.747857972301,103.747754455733,103.747630765525,103.747443990228,103.74765973376,103.747775950707,103.747781014088],"lat":[1.3449742165657,1.34498170743449,1.34473929262346,1.34475010472003,1.3447620730478,1.34478733799186,1.34479506507096,1.34479509837592,1.34469588908626,1.34464990226969,1.34446358571047,1.3442675313973,1.34424160247539,1.34410125079959,1.34409213752107,1.3442663956692,1.34426183421643,1.34456282418885,1.3449702972952,1.3449740526973,1.3449742165657]}]],[[{"lng":[103.850338873065,103.850355450295,103.850698390172,103.85040042892,103.850324052267,103.848489340809,103.848577075407,103.848894804265,103.848891740489,103.848352292261,103.848370177983,103.848433076715,103.849466951534,103.849528142706,103.849924219826,103.84994246027,103.849940483443,103.850084699385,103.850182730613,103.850241100975,103.850244608894,103.850286512524,103.850395685697,103.850500455994,103.850629756421,103.849573952661,103.850338873065],"lat":[1.30957995820846,1.30956668383025,1.30929207474151,1.30890084863264,1.30889153419812,1.31035884701099,1.31055828059532,1.31132331508646,1.31136806126163,1.31199900907107,1.3120155841589,1.31206297248714,1.31269276555417,1.31268543980226,1.31215547948991,1.3121392912404,1.31213648772311,1.31195335290845,1.31187982739777,1.31183628636416,1.31183367001329,1.31180241307596,1.31172110994474,1.31164297211554,1.31152793603262,1.31019246781635,1.30957995820846]}]],[[{"lng":[103.859668996456,103.859678797975,103.859976818842,103.859988249412,103.859995059592,103.860018242295,103.86002342334,103.860044300275,103.8600708973,103.860095787,103.860101158479,103.860114566512,103.860116633156,103.8601255287,103.86036480924,103.860402278252,103.860434548322,103.860479103193,103.860474250985,103.861234862537,103.861246992561,103.861216081667,103.860888501285,103.860888467139,103.860486901349,103.859525105823,103.859266594685,103.859271896203,103.859306940568,103.859668996456],"lat":[1.31068958851184,1.31070391806566,1.31113960973429,1.311151907162,1.31115923425121,1.3111726185991,1.31117380506991,1.31117858712597,1.31117650680163,1.31116664895962,1.3111623549786,1.31115163630479,1.31114991798976,1.31114150730299,1.31085952382548,1.31081557129749,1.31077746916033,1.31072486268896,1.31072070266461,1.30982266018492,1.30978838462973,1.30971332271216,1.3093656307153,1.30936559544545,1.30893937551549,1.3099361765154,1.31005772582829,1.31006577461833,1.31016028035752,1.31068958851184]}]],[[{"lng":[103.729138907193,103.728502335935,103.728382468051,103.728367551959,103.728361462925,103.72849624699,103.729771214432,103.7300079731,103.730193622292,103.730227319732,103.730254817323,103.730275216463,103.730287977959,103.730524352532,103.730454356483,103.730368277236,103.730289656417,103.730219841838,103.730159642145,103.73007355774,103.729138986266,103.729138907193],"lat":[1.34586414829953,1.34586173966279,1.34586128229388,1.34586119121166,1.34746661603002,1.34746716448844,1.34747192205333,1.34775807261547,1.34760253010119,1.34756888923383,1.34753000279663,1.34748686555084,1.34744083401817,1.34617301758358,1.34613032867929,1.34606322128893,1.34598716101931,1.3459028714189,1.34581170906733,1.34586768547064,1.34586414920729,1.34586414829953]}]],[[{"lng":[103.931147265025,103.931148954331,103.931239953287,103.931149937363,103.931150520533,103.931150638245,103.931160933125,103.931161631311,103.931164276692,103.931171079741,103.931174901346,103.93121862291,103.931263836036,103.931378648461,103.931539931829,103.931702652703,103.93177354931,103.93177835752,103.931866182155,103.932030978382,103.932196843687,103.932363256984,103.932530478806,103.932698329419,103.932866539329,103.932870791297,103.932900666493,103.932883399232,103.931338034091,103.931147265025],"lat":[1.32722499734466,1.32722563666228,1.32676236390573,1.32722600831645,1.32722622986226,1.32722627417137,1.32723017337607,1.32723043742236,1.32723143935158,1.3272340147074,1.32723546153651,1.32725201687848,1.32726759092602,1.32730714048492,1.3273581039591,1.32740436467566,1.3274230477904,1.32742431551508,1.32744746007715,1.32748576229121,1.32751890958027,1.32754881017167,1.32757427029534,1.32759475638415,1.32761208621905,1.32761239986085,1.32761460800976,1.32656438073033,1.32626302395239,1.32722499734466]}]],[[{"lng":[103.886186285942,103.886186937412,103.886194315642,103.886266291709,103.886339974965,103.886414916127,103.886416353001,103.886496865,103.886558686869,103.886618532061,103.886673345507,103.886807414366,103.886785669661,103.887070341391,103.887093164399,103.887660441257,103.887656128256,103.887649389717,103.887698362524,103.88772594933,103.887741765035,103.887832440127,103.887858857976,103.88795266819,103.888043692641,103.888126450128,103.888251259674,103.888362230895,103.888619755374,103.888646801036,103.888649227001,103.888344510675,103.888271813752,103.888202711251,103.888170541495,103.888123994408,103.888071696512,103.888012569537,103.887246615844,103.887193149991,103.88714040294,103.887089812409,103.887040839261,103.886993753043,103.886949452341,103.88690829661,103.886869117696,103.886832364872,103.886798846848,103.886768383944,103.886740526847,103.886716893026,103.886696134707,103.886674298083,103.886661357893,103.886649226723,103.886632512901,103.886614541166,103.886594592698,103.886569522435,103.886498175812,103.886160584354,103.885850669206,103.885544348394,103.885544530058,103.8855375233,103.885505626056,103.88548729689,103.885479121594,103.885475259441,103.885480562696,103.885489370363,103.88549898675,103.885518577212,103.88554278527,103.885544637336,103.885549826805,103.885579323657,103.885614908338,103.885657322052,103.885704318388,103.885768028291,103.885835332386,103.885905511827,103.885978836164,103.886054586557,103.886123687349,103.886186285942],"lat":[1.3698443789415,1.36984467103658,1.36984797722724,1.36987583003652,1.36989934185883,1.36991860314047,1.36988052938839,1.36988631552122,1.36989779956166,1.36991724204697,1.36994780831933,1.37004764708577,1.37007875769183,1.37029127679679,1.37026107052779,1.37068448081546,1.37069054015185,1.37072327827781,1.37075547251338,1.37078640112738,1.3708248362303,1.37123812844248,1.37123270165392,1.37120873385957,1.37117626510532,1.37113882253687,1.37105597992955,1.37095857737792,1.37070625389231,1.37064945921363,1.37064186250085,1.37015288002251,1.37003857010832,1.36993013847385,1.36988835760412,1.36983717168047,1.36978761374296,1.36974022643429,1.36917230337582,1.36912952817307,1.36908422073389,1.36903674277145,1.36898727517081,1.36893473268933,1.36887983879801,1.3688238595984,1.36876616206215,1.36870620356097,1.3686438936404,1.36858076972326,1.36851556571029,1.36845027116592,1.36838850357609,1.36832574120984,1.36828992868872,1.36826804335354,1.36824850946689,1.36823277393663,1.36822246463381,1.36821441635496,1.36820465081678,1.3682528609173,1.36831888633018,1.36838843864396,1.36847860372283,1.36857500907013,1.36866635052437,1.36874286011308,1.36882099733452,1.3688994962071,1.36897790444269,1.36905586041954,1.36913408768776,1.3692100538276,1.36927877319797,1.36928403022482,1.36929458403795,1.36935456984959,1.36941534232378,1.36947150239138,1.36952368315619,1.3695834602089,1.36963907710656,1.36969098604669,1.36973819222278,1.36978150957801,1.36981632605745,1.3698443789415]}]],[[{"lng":[103.751882635276,103.751868202068,103.752278845829,103.752631442797,103.752644742278,103.752667387399,103.752688055714,103.752705129818,103.752718070573,103.752720676909,103.752722834965,103.752724094457,103.752723017678,103.752721851042,103.752719156842,103.752712239368,103.752702356331,103.7526828585,103.752663989767,103.752687981567,103.752760226786,103.752830136015,103.752896181707,103.752958094241,103.7530129084,103.753054603881,103.753078867478,103.753085159888,103.753072492542,103.753134585808,103.753179876204,103.753249334786,103.753329756181,103.753410627257,103.753489701609,103.753588455588,103.753604001085,103.753673282406,103.754202463558,103.754276687723,103.754333929423,103.754370685852,103.754358919891,103.754339602821,103.754309233519,103.75427068713,103.754223244741,103.754168433896,103.754107332818,103.754041199508,103.753971022318,103.753898238952,103.753824646551,103.753772980937,103.753775676712,103.75370675922,103.753736501891,103.753713050176,103.753619508865,103.753529381812,103.753441051705,103.753355417097,103.753306803758,103.753314352015,103.753359103188,103.753392532614,103.753415718505,103.753422730347,103.753429116383,103.753402605714,103.753365222552,103.753317955323,103.753261972212,103.753196823988,103.7528366678,103.752751121853,103.752658028265,103.75255990297,103.752456476404,103.752349455904,103.752239560297,103.752085185538,103.752152038143,103.752102035807,103.751993175646,103.751992638697,103.751905089763,103.751905650097,103.751748565793,103.751694907131,103.751693365394,103.75189149884,103.751882635276],"lat":[1.35968730286159,1.36012942395403,1.36015439829852,1.36016282076933,1.36014156867555,1.36010358617201,1.36006442792925,1.36002364171121,1.35998122749986,1.35996630559033,1.35992117792611,1.35987595979533,1.35983074158602,1.35978552337368,1.35974039554634,1.3596957197588,1.35965999706987,1.35962852456599,1.35959397724735,1.3595910840908,1.35957480797564,1.3595500307633,1.35951630022096,1.35947515375777,1.35942505385689,1.3593633776633,1.35929292856022,1.35921868052935,1.35914515535521,1.35907271791633,1.35899096497072,1.3590069745227,1.35901348862159,1.35900788426209,1.35898989006032,1.35894006291495,1.35893047717835,1.35887169585157,1.35838082484331,1.35829853020871,1.35820321217837,1.35804567326333,1.35788415355313,1.35782012398128,1.35775247659173,1.35768935075039,1.35763264559654,1.35758290379816,1.35754175324462,1.35750892266785,1.35748649213616,1.35747446169667,1.35747246966316,1.35741531217971,1.3574128704875,1.35733843908866,1.35733310432926,1.35730778137432,1.35732948299759,1.35735995705645,1.35739594778883,1.35743781697025,1.35746756891078,1.35745807334547,1.3573776769205,1.35729203480963,1.35720313664893,1.35711062049621,1.35692088524631,1.35701258682383,1.3570999470944,1.35718278521764,1.35725956381395,1.35732865501342,1.35767338633682,1.35775079698309,1.35781880199233,1.35787893886623,1.35793102672242,1.35797316645456,1.35800617201363,1.35804451180783,1.35806359613724,1.35932454841524,1.35931982575943,1.35933495121992,1.35933180106602,1.3593160335083,1.35930922826436,1.3593069094604,1.35940791685655,1.35941579155127,1.35968730286159]}]],[[{"lng":[103.936351191135,103.936344319844,103.935387752084,103.935353524447,103.93678681811,103.937685737935,103.937701013305,103.93773776421,103.937773706629,103.939894399728,103.93996825866,103.940326522046,103.940311066072,103.940235677263,103.940234329946,103.94020557548,103.93835769274,103.938215449826,103.936676487083,103.93572455536,103.9357206917,103.935665166387,103.935544696011,103.936619823072,103.936462879492,103.936351191135],"lat":[1.3266435360719,1.3266421888587,1.32645458785978,1.32663121140673,1.32691186583471,1.3270851942474,1.32708437967207,1.32708627727386,1.32709323934277,1.32750879356925,1.32745868865341,1.32560427669917,1.32558401963923,1.32557823499202,1.3255901726426,1.32557190575826,1.32535059723251,1.32530194856357,1.32501759145301,1.32489047776731,1.32489328145381,1.32502070853304,1.32564309627247,1.32585394886316,1.32666544049129,1.3266435360719]}]],[[{"lng":[103.860926082782,103.860920337256,103.860831422677,103.860754414322,103.860676866824,103.860521322561,103.860458332085,103.860218241394,103.860308999202,103.860298131121,103.860311880687,103.860323832827,103.86067381988,103.861018237654,103.860926082782],"lat":[1.35925932367945,1.35925109855255,1.35912382115535,1.35901520788826,1.35890578069676,1.35868638369204,1.35859757583323,1.35915557128802,1.35939097628813,1.35980309520527,1.35993793576209,1.36004636890248,1.35963316090851,1.35939123951969,1.35925932367945]}]],[[{"lng":[103.74745156842,103.747451341477,103.74744634604,103.747445445347,103.747513918928,103.747649508066,103.747586605832,103.747552190581,103.747508698033,103.747471135885,103.747439953465,103.747416049376,103.747395918924,103.74738567273,103.747343781072,103.747345576953,103.747355819526,103.747374598736,103.747399758048,103.747430488816,103.747464095325,103.747538676973,103.748402103546,103.748481061193,103.748688850911,103.748921940888,103.749077663557,103.749231858388,103.749384255774,103.74953431655,103.749681861095,103.749726160284,103.749726168821,103.749726171433,103.749726173344,103.749726175255,103.749726177803,103.749726180351,103.749726182262,103.749726184172,103.749726186083,103.749726187997,103.749726189907,103.749726191817,103.749726193728,103.749726195638,103.749726198185,103.749726200731,103.749726202641,103.749726204551,103.749726206461,103.749726208371,103.74972621028,103.74972621219,103.749726214102,103.749726216012,103.749726128789,103.749726148441,103.749726062511,103.749725973694,103.74967610233,103.749625961413,103.749575730646,103.749525499896,103.749475179303,103.749424768862,103.749374358437,103.749323858167,103.749273268051,103.749222588094,103.749171998006,103.749121318074,103.749070548297,103.749019778536,103.74896900879,103.748918149196,103.748867289616,103.748762515298,103.748313944844,103.747455261637,103.74745156842],"lat":[1.39035615823275,1.3903700392938,1.39067522277214,1.39073373503213,1.39067839051619,1.39084913922818,1.39089978126342,1.39089263553637,1.3909316119951,1.39097637659391,1.39102584411384,1.39107929109757,1.39114340970386,1.3912100608889,1.39170583120329,1.39174101099361,1.39177447280388,1.39180377485698,1.39182756052901,1.39184374975497,1.39185189025436,1.39186003225358,1.39197445840106,1.39198492202945,1.39201245926167,1.39204285427037,1.39206682549749,1.39209812200105,1.3921377385712,1.39218621780699,1.39224093704939,1.39226074418347,1.39201837485993,1.39194421708174,1.39188995529278,1.3918356935038,1.39176334445179,1.39169099539974,1.39163673361066,1.39158247182157,1.39152821003245,1.39147385780697,1.3914195960178,1.3913653342286,1.39131107243938,1.39125681065013,1.39118446159776,1.39111211254535,1.39105785075601,1.39100358896665,1.39094932717726,1.39089506538785,1.39084080359841,1.39078654180894,1.39073218958314,1.39067792779363,1.39060304652086,1.39004442139601,1.38993273254204,1.38990315986335,1.38991292520844,1.38992214792494,1.38993109932816,1.38993959854873,1.38994764558339,1.38995542130482,1.38996274484353,1.3899697066327,1.38997630667225,1.38998245452592,1.38998824063642,1.38999366499734,1.38999872760867,1.39000333803731,1.39000749628327,1.39001138321594,1.39001490840225,1.39002177778879,1.39004527502246,1.39013052519818,1.39035615823275]}]],[[{"lng":[103.718512212638,103.718584289325,103.71961350215,103.719619163432,103.72019761081,103.720773902927,103.720765471656,103.720469502319,103.719253864454,103.71915464847,103.718704029546,103.717981656738,103.718512212638],"lat":[1.3340808063381,1.3341009860542,1.33438913607937,1.33438081620533,1.33334806074599,1.33227614609092,1.33194243582501,1.3316219160245,1.33126092853231,1.33159951733152,1.33146601234465,1.33393226601731,1.3340808063381]}]],[[{"lng":[103.94077231704,103.94078420413,103.94134781882,103.941347610286,103.941347082694,103.941347348897,103.941279597286,103.940199525658,103.9401030201,103.940102931571,103.940022330549,103.940022778516,103.93969516281,103.939543664943,103.939393514358,103.939328098496,103.939284877284,103.939243004895,103.939221620796,103.939212366922,103.939193500344,103.939179845476,103.939172211011,103.939169518649,103.939169518767,103.939169070833,103.939160741623,103.939159848546,103.939156347099,103.939146913931,103.939235152778,103.939245072231,103.939244896494,103.939242204781,103.939238433639,103.939236907228,103.940141939896,103.940142037049,103.94027628237,103.94077231704],"lat":[1.35436736684635,1.35436737174223,1.35436758437951,1.35371644318,1.35194561040663,1.35186946304644,1.35186883302433,1.35186996633548,1.35187033235273,1.35190071894817,1.35190081294961,1.35187069764704,1.35187197821822,1.35186538304244,1.35184585540891,1.35183346851199,1.35182487896287,1.35183889842548,1.35187769653104,1.35190808352953,1.35198260385778,1.352058299629,1.35213480906266,1.35221158958832,1.35221430267691,1.35224541277922,1.3528783767145,1.35300498755453,1.3530729957955,1.35311314992063,1.35311305560975,1.35392589650922,1.35401750847395,1.35410912054921,1.35417414440406,1.35420055186643,1.35420051190707,1.35436718597125,1.35436718001429,1.35436736684635]}]],[[{"lng":[103.952424537943,103.952428775475,103.952448390118,103.952484234415,103.952536790205,103.952563203548,103.951303580441,103.951289605193,103.951292032669,103.951300031222,103.951313331229,103.95133121378,103.951352959975,103.951377671208,103.951404179316,103.951605729716,103.951673392993,103.952271035795,103.952375357095,103.952420990346,103.952424537943],"lat":[1.37448512294275,1.37446446799983,1.37436884336468,1.37419429964416,1.37398131968708,1.37388825948143,1.37372996855647,1.37459517268911,1.37462239387439,1.37464843911171,1.37467222317959,1.37469266087891,1.37470884788302,1.37472006074663,1.37472584734662,1.37474799418598,1.37476698242094,1.37484210504578,1.37478738589577,1.37450241904951,1.37448512294275]}]],[[{"lng":[103.8021979086,103.802217994273,103.802241897788,103.802233002039,103.80231117443,103.802400308431,103.802408035708,103.802513884238,103.80256815632,103.802652438659,103.802729802814,103.802766194675,103.802905023111,103.803034596244,103.803113849553,103.803164977682,103.803224641901,103.803592510905,103.803592960186,103.803628902674,103.80363591158,103.803631778593,103.803616952891,103.803596017026,103.803402023393,103.803389264261,103.803349907804,103.803305968917,103.80326131126,103.803216384099,103.803172086003,103.803129315501,103.803088611713,103.803051052894,103.803016728883,103.802466196959,103.802418934092,103.802371491516,103.802324677932,103.802282446975,103.802246236318,103.802215147321,103.802192234968,103.802117475865,103.801764523468,103.801727682166,103.801676374572,103.801607185701,103.801522989649,103.801315153022,103.801318657335,103.801438433141,103.801524782385,103.801655159175,103.801738003652,103.801760287254,103.80178364889,103.801849600901,103.802041526507,103.802107298446,103.8021979086],"lat":[1.29703118433011,1.29706195558726,1.29709857360918,1.29711213896952,1.29718801613256,1.29731589439776,1.29733244436663,1.2973280142793,1.29732566359576,1.29741555847591,1.29745553233816,1.29738643931842,1.29710238005191,1.29684102021884,1.29669360972623,1.29660986616862,1.29653218195551,1.29608416405528,1.29608335013235,1.29601923109896,1.29599626031807,1.29596940063742,1.29594670090822,1.29592969860442,1.29576790545872,1.29575225979752,1.29577405451855,1.29578382113368,1.29578807111472,1.29578725664939,1.29577938814608,1.29576555085327,1.29574637783278,1.29572150735184,1.29569238639518,1.29523006846903,1.29518837667642,1.2951467753172,1.2951044504731,1.29505751342466,1.29500569288042,1.29495685680249,1.2949162505441,1.29494220488581,1.29531968231287,1.29540279296647,1.29546519348605,1.29554866547664,1.29575268908922,1.29603493867423,1.29603548133763,1.29603855769828,1.29610141213706,1.29625208093905,1.29635201427893,1.29637453323944,1.29641468732474,1.29650295414467,1.29677299983584,1.29689237679233,1.29703118433011]}]],[[{"lng":[103.887535237702,103.887533056416,103.887517157385,103.887446155516,103.887444627635,103.887433033654,103.887400770476,103.887370841628,103.887356193513,103.887327437831,103.887285922546,103.887235062337,103.887179080559,103.887121391776,103.886960816078,103.886778763751,103.88642095047,103.886147603525,103.885819084114,103.88561366966,103.885357845085,103.885402595638,103.885483919957,103.885556258606,103.885619162279,103.885854709887,103.885871834865,103.885881620934,103.885870654766,103.88588737825,103.885892766816,103.885978254282,103.886202192683,103.886284744103,103.886341382344,103.88690766588,103.886923292244,103.886954350849,103.886957822953,103.886962550307,103.886959015303,103.886974532026,103.887251204068,103.887400278087,103.88743658052,103.887473242216,103.887506039862,103.887533715462,103.887555280606,103.887569836741,103.887576844755,103.887575226385,103.887563812144,103.887572708063,103.887552935409,103.887569195487,103.887535237702],"lat":[1.39628632762323,1.39626744003841,1.39612975375017,1.39551460721851,1.39550167485318,1.39540083857054,1.39521815785206,1.39494856772806,1.39489285926312,1.39484275817867,1.39480242451606,1.39477529477796,1.39476272541211,1.39476317892139,1.39478217424642,1.39477548612229,1.39482080289314,1.39486114370338,1.39491595554032,1.39495222512653,1.39499726814503,1.39505623166352,1.39518691040834,1.39532283466012,1.39546337137519,1.39604104378691,1.39603398846067,1.39605804883696,1.39606256728462,1.39610368380435,1.39613437778725,1.39634403269086,1.39689342857861,1.39688269914613,1.39687533814949,1.3968015291505,1.39692296674728,1.39716433798764,1.39716387939551,1.39720011804393,1.39720058477679,1.39732117498637,1.39728454188409,1.39726482330841,1.39725559795797,1.3972390472529,1.39721571390941,1.39718641188415,1.39715231687304,1.39711460456988,1.39707481240556,1.39703447782341,1.39693535983006,1.39693427438705,1.39676452578474,1.39658039696306,1.39628632762323]}]],[[{"lng":[103.874819675218,103.87484183619,103.875005829885,103.875037009549,103.875064594904,103.875118327786,103.875144385383,103.875236753693,103.875300909363,103.875370187544,103.875380520856,103.87540594971,103.875427694521,103.875492120235,103.875504609971,103.875530577776,103.875568585916,103.875584939291,103.875656283284,103.875733917183,103.875811371522,103.875940941526,103.876070331971,103.875468643446,103.874704312528,103.874549403893,103.874535206903,103.874520830156,103.874500972215,103.874455325817,103.874370232942,103.874218108071,103.874026177352,103.873968760052,103.873922125668,103.8738872626,103.873868034503,103.873862733627,103.873860128878,103.873862735315,103.87386794759,103.873876394691,103.873887178046,103.873901825245,103.873928693215,103.873940464965,103.873988180374,103.874010106163,103.874030863891,103.874048656302,103.874058990347,103.874151546044,103.874180120975,103.874191015851,103.874194859569,103.874194291706,103.874169611252,103.874171229919,103.874197648171,103.874213285253,103.874175366672,103.874238993703,103.874254271248,103.874270177895,103.874273233326,103.874280961511,103.874297136237,103.874320589267,103.874348714751,103.87438124309,103.874406762486,103.874432551415,103.874473346419,103.874504436866,103.874524295184,103.87454370414,103.874577130615,103.874607501907,103.874632661462,103.874651800656,103.874819675218],"lat":[1.35779894733763,1.35777823882477,1.35762499510007,1.35759216614087,1.35755671458771,1.3574786670288,1.35743191094961,1.35718637447715,1.35707604093285,1.35700595150154,1.35699491807831,1.35696335532494,1.3569361335837,1.35685410662736,1.35683547650704,1.35679324224612,1.35672568557758,1.35669611258291,1.35657601177056,1.3564533786257,1.35633996999586,1.35616352626055,1.3559969400909,1.35545270436075,1.35476286863925,1.3549932128486,1.35501283779397,1.35502984008625,1.35504982687395,1.3550905240415,1.35516178938978,1.3552889455801,1.35545137263703,1.35551079033295,1.35557870886887,1.35565377168247,1.35572539764841,1.35576491845177,1.35583039446123,1.35586638811108,1.35590238171703,1.35593783264994,1.35597237917925,1.35600783000751,1.35606037311213,1.35609329176897,1.35618951530978,1.35623744623961,1.35628980857333,1.35633900568248,1.35637165305365,1.35657974567711,1.3566129353564,1.35670653053084,1.35673954608771,1.35674138195659,1.35682112016341,1.35689563974221,1.35692132323526,1.35704314082077,1.35709550414974,1.35760728274004,1.35772204629017,1.35784304994192,1.35786131804561,1.35789224716766,1.35792453269186,1.35795211539822,1.35797445271252,1.35798982634733,1.35799751300632,1.35800293875007,1.35800999209206,1.35801424207083,1.35801514609454,1.35801134743224,1.35800130841657,1.3579877424328,1.35797092082736,1.35795581761709,1.35779894733763]}]],[[{"lng":[103.852261295317,103.852666919283,103.852667278685,103.852751743058,103.852751293801,103.852835758175,103.853227888222,103.853259337663,103.853289798683,103.853327448125,103.853361054017,103.853393222211,103.85343230922,103.8534715759,103.853720204926,103.853715262575,103.853938821999,103.853859828269,103.853755326316,103.853394736078,103.852849402998,103.852332105042,103.850880579265,103.850292224261,103.850291911543,103.850141790855,103.850141860947,103.849569407643,103.849619594978,103.849632999778,103.84964541789,103.849641617001,103.849650748741,103.849653318609,103.849662954577,103.849833859782,103.849918683403,103.850112591661,103.850313508742,103.850514605637,103.850709322879,103.85191725308,103.852098479465,103.852261295317],"lat":[1.33114710936452,1.3312068042045,1.3312040911081,1.33121657067063,1.33121919333132,1.33123167289094,1.33125048052064,1.33124749586218,1.3312433355375,1.33123591944152,1.33122253457217,1.33120824534963,1.33118581678924,1.33115841422191,1.33098206108483,1.33094642916386,1.33078789219426,1.32949772642541,1.3295041482856,1.32951482276193,1.32954792690225,1.32960816164076,1.32973053297478,1.32977972097858,1.32977659097506,1.3297915936074,1.32979229268071,1.32984015098659,1.33043509048848,1.33059398544107,1.33074119962749,1.33074163193902,1.33083511332785,1.33083485647121,1.3309490821704,1.33092583885707,1.33091543809234,1.33089554075265,1.33088884707137,1.33089707538724,1.33091877876342,1.33109647753217,1.33112314857419,1.33114710936452]}]],[[{"lng":[103.78097604595,103.780985281921,103.781235161766,103.781365768336,103.781532199988,103.781602338707,103.782035942943,103.781854606393,103.781798175158,103.781748034277,103.78170274603,103.781602352806,103.781532217283,103.781353829632,103.781205559368,103.781179955374,103.781139254415,103.781013629133,103.780824478279,103.78062849785,103.780560744856,103.780261330602,103.780053481171,103.779997320353,103.77940406823,103.77940505596,103.779409188455,103.779410446166,103.779424103527,103.779439325775,103.7794496222,103.779473883382,103.779475542142,103.779513061032,103.779463816931,103.779414263703,103.77934385182,103.779318420997,103.778534487289,103.778534478102,103.778100226232,103.778059289755,103.778063782671,103.778100224781,103.778143936445,103.778227235498,103.778312242005,103.778399315492,103.778768187528,103.778880780979,103.778990948009,103.779098868347,103.779139394525,103.779140295368,103.779200052101,103.779258730668,103.779315432489,103.779369348819,103.779419401345,103.779465050891,103.77950584814,103.77954098435,103.779570279778,103.779593015536,103.779608742311,103.779617460079,103.779619258153,103.779730054098,103.779750002334,103.779831680891,103.779863752787,103.780394217874,103.780460684513,103.780507170828,103.780509567345,103.7805127843,103.780518464268,103.780542116971,103.780552462485,103.780563303087,103.780576569107,103.78061712918,103.780626945584,103.780662598793,103.780874931943,103.78088984894,103.780933190972,103.780937565433,103.78097604595],"lat":[1.4357545025108,1.4357452601297,1.43549350828506,1.43536192278269,1.43519424404087,1.43512357958574,1.43468672671511,1.43469269141546,1.43466971930639,1.43463824632254,1.43459691588659,1.43449592605549,1.43442537326031,1.43424592449735,1.43410325054093,1.43407861328597,1.43403984048426,1.433920164997,1.43377663816615,1.43364541050443,1.43360100469082,1.43371558057038,1.4339129078063,1.43385538897832,1.43386034899196,1.43389127824324,1.43393568258353,1.43394942893683,1.43400387193642,1.43403980084576,1.4340641031426,1.43410127305238,1.43410321023802,1.43414703476706,1.4341950552972,1.4342434303293,1.4343121675111,1.43433766995469,1.4343301449856,1.43471630814424,1.43515316121039,1.43519434311387,1.43519678500419,1.43521364412736,1.43523386584947,1.43526280749801,1.43528668475011,1.43530178972444,1.43535153859525,1.43537252252577,1.43540264046282,1.43544162110206,1.43546097544498,1.4353654746944,1.43535833164787,1.43534485803047,1.43532442076656,1.43529738158241,1.43526374045262,1.43522422085538,1.43517972714365,1.43513053060756,1.43507762604287,1.43502155605084,1.43496304411174,1.43490308502548,1.4348651922422,1.43489910848408,1.43492352676572,1.43500582756618,1.43503814303325,1.43557264596944,1.43563961833902,1.43567032255729,1.43567190524895,1.43567254470864,1.4356747921837,1.43567991323886,1.43568042534888,1.43568257798553,1.43567992579575,1.43567181731059,1.43566519850263,1.43564116044602,1.4358547759917,1.43584084913981,1.43579739547872,1.43579300941713,1.4357545025108]}]],[[{"lng":[103.862154974899,103.862157731634,103.862485287877,103.861929703978,103.861808667061,103.861692392562,103.861221644856,103.861063141184,103.86059320099,103.86098380634,103.861406401625,103.861946610517,103.862154974899],"lat":[1.32605591303018,1.32605332018485,1.32574524998518,1.32505613075209,1.32490600764658,1.32476185328555,1.3251731636431,1.32528422139598,1.3256055473577,1.32595743123037,1.32642398809162,1.32625188130166,1.32605591303018]}]],[[{"lng":[103.84538692395,103.845103219263,103.845116787765,103.845505152431,103.845682082083,103.845860898698,103.846038996408,103.846217273783,103.846396000395,103.846571132654,103.846745905428,103.846918791139,103.847089250639,103.847256924497,103.847421363426,103.847582926852,103.847841086805,103.847667479013,103.847654269635,103.847637645678,103.84762039272,103.847602690476,103.84758373023,103.847562793123,103.847540238587,103.847515797049,103.847489738082,103.848070305017,103.847873784639,103.84767268122,103.847260052171,103.846758200868,103.846719112702,103.846677149122,103.84663266956,103.846586213161,103.846538319071,103.846489526435,103.846440374398,103.846391402104,103.846343148698,103.846305588342,103.845976438655,103.845946426547,103.845726048454,103.845612787181,103.845608476742,103.845476294429,103.845476384361,103.845164400846,103.845139600307,103.845435772649,103.845494180495,103.845540008324,103.845573166274,103.845593025332,103.845599315916,103.845593655315,103.845572629202,103.845538394012,103.845407672698,103.84538692395],"lat":[1.38339562811452,1.384091457282,1.38409326594251,1.3841434561796,1.38416190428798,1.38417139916789,1.38417203126936,1.38416352927841,1.38414598362997,1.38411993696515,1.38408484664783,1.38404098399619,1.38398852988662,1.38392757475819,1.38385829948702,1.38378052319879,1.38364803227584,1.3831474677777,1.38309401993623,1.38304147647953,1.38298920433572,1.38293702263091,1.3828852931156,1.38283428710337,1.3827840950284,1.38273471689229,1.38268624312973,1.38228623930636,1.38195298233077,1.38155886165655,1.38095149314748,1.3814063912334,1.3813763665647,1.38135068285963,1.38132961142526,1.38131333313128,1.38130211928378,1.38129596987971,1.38129515622524,1.38129949744458,1.38130899353475,1.38132066003924,1.38098053045662,1.38103379766728,1.38120858620323,1.3812984163844,1.38130298615901,1.3814431153588,1.38145767562161,1.38178478572858,1.38181046979536,1.38222123050353,1.38231410840376,1.38241259342541,1.382516323824,1.38262321956573,1.38273183366969,1.38281431171122,1.38292102679214,1.38302412448452,1.38334473943686,1.38339562811452]}]],[[{"lng":[103.832038418267,103.832090808598,103.833378604133,103.832547232254,103.83251533247,103.83249664188,103.832460968018,103.832390159444,103.832299761694,103.832208555211,103.832117258864,103.832028119116,103.831942393987,103.831861700931,103.831787837119,103.831614949088,103.831419147489,103.830727685183,103.831300532837,103.831316078349,103.831316168169,103.831307182265,103.831296848482,103.831284717529,103.831789902271,103.832038418267],"lat":[1.41375104904808,1.41372461451865,1.41307481759656,1.41140617551893,1.41134214653895,1.41134422656938,1.41133120371506,1.41131203117113,1.41129774218178,1.41129638559324,1.41130624311426,1.41132794780088,1.41136068572651,1.41140454732897,1.41145908042796,1.41154671317422,1.4111537668765,1.41150276025545,1.41265229786199,1.41269398905403,1.4127384837608,1.41278207409561,1.41282539312002,1.41286256246786,1.41387644528721,1.41375104904808]}]],[[{"lng":[103.834053811006,103.834073948429,103.834287492282,103.834518568542,103.834709148,103.834694950105,103.834665925305,103.834660893134,103.834633036823,103.834365256815,103.834097746381,103.833399990783,103.833368360395,103.833373212785,103.833359644067,103.83336827054,103.833416704578,103.833456781765,103.834053811006],"lat":[1.42411707461287,1.42411603097055,1.42410495876471,1.42409297764429,1.42408309645814,1.42381450039755,1.42326591328979,1.4231541339178,1.42315178258769,1.42313875988408,1.42310855423546,1.42309851592291,1.42309806374168,1.42319302194853,1.42319365500342,1.4233701868316,1.4233676546115,1.42414803019368,1.42411707461287]}]],[[{"lng":[103.820163508503,103.820213894053,103.820590582487,103.820770293371,103.820715212765,103.82053658271,103.820448974934,103.820361367173,103.820273759426,103.82017770541,103.820194957635,103.819661134833,103.819532553793,103.819276290345,103.819259127986,103.819117221701,103.819113156711,103.819113133349,103.819090921465,103.818858735304,103.818848132376,103.818690166703,103.818798979671,103.818823239872,103.818821442326,103.818804728965,103.818720713362,103.818673538715,103.81862807136,103.818599497121,103.818516560267,103.818436409097,103.818363805916,103.818263976645,103.818189846063,103.818164326671,103.818412864697,103.818473965644,103.818520060823,103.818601918462,103.818625999457,103.818641005022,103.81865690892,103.818666972043,103.818677215196,103.81869132216,103.818708933576,103.818769226142,103.81885171312,103.818942736629,103.819017405832,103.819005364867,103.81901587715,103.819010305815,103.819003117089,103.818992154446,103.818974901949,103.818952168296,103.818925481024,103.818895019846,103.818859886216,103.818819810575,103.818777219005,103.818732920198,103.818685835903,103.818635516859,103.81858340074,103.818533441181,103.818595979193,103.818669120772,103.818760053809,103.818873360892,103.819049476664,103.819200972171,103.819337012556,103.819445647078,103.819535232286,103.81957171329,103.819640002798,103.819706405167,103.819726891894,103.8197325527,103.820163508503],"lat":[1.32129929136485,1.32127779940782,1.3211171229176,1.3210413380827,1.32091029536714,1.32048578569059,1.32027751006043,1.32006923442696,1.31986095879017,1.31963260621021,1.31962745142356,1.31835790144789,1.31805222548416,1.31744295357923,1.31744856054255,1.31711232328565,1.31710262485579,1.31710263480367,1.31705000607954,1.31714867091679,1.31715292136864,1.31722011473307,1.31749142476846,1.31760917318776,1.31768586329918,1.31773876853291,1.31792018358599,1.31804001162221,1.31815133863988,1.31820288725446,1.31829666937246,1.31836006485243,1.31839651030917,1.31842906683015,1.31844227010123,1.31852954113238,1.3187547294384,1.3188501402753,1.31893858741317,1.31901057532707,1.31904340390665,1.31908590913368,1.31916576462534,1.3192779963361,1.3193357852969,1.31938715329162,1.31942160968837,1.31946746133114,1.31948265514155,1.31944801850763,1.31952859782994,1.31959316939496,1.3197287337142,1.31978326686918,1.31983752870536,1.31989115746437,1.31994306789394,1.31999271737991,1.32004037724043,1.32008568573052,1.32012737673434,1.32016436501254,1.32019836887198,1.32022993093609,1.32025733290559,1.32027795212025,1.32029323557183,1.32030273110164,1.32051037359332,1.32060885933616,1.32068763003305,1.32075147884143,1.32083811799722,1.32091399506073,1.32099529821519,1.32108021866669,1.321166495554,1.3212080060938,1.32129681507945,1.32141899510732,1.3214692778933,1.3214831147032,1.32129929136485]}]],[[{"lng":[103.820350965163,103.820427954957,103.820801892286,103.820740075563,103.821122495037,103.821047470304,103.821016472219,103.820992392441,103.821021145763,103.821322875933,103.821901626443,103.822015920919,103.822574005016,103.822600961218,103.822579756061,103.82257095035,103.822223574247,103.822221417921,103.821513097852,103.821513726798,103.82128298138,103.821052325836,103.820623901381,103.819939662192,103.819542956193,103.81935803637,103.819181742511,103.819160087654,103.819233404301,103.819905603432,103.820091511745,103.820222961531,103.820350965163],"lat":[1.29088508668353,1.29087740268982,1.29084007781724,1.29024021230586,1.29020069343779,1.28947385504063,1.28914330953417,1.28890953110047,1.28890799382025,1.28889262106752,1.28884830986957,1.28883664407647,1.28877930977795,1.28878645437485,1.28868814982375,1.28869032026201,1.28872414200718,1.28868434994359,1.28872513359037,1.28873236851223,1.28874964079308,1.28876248166548,1.28878029553823,1.28881592398527,1.28883907359517,1.28885254761716,1.28887117655356,1.28887434170937,1.28965670815247,1.28958987924782,1.28956799459845,1.29089786379353,1.29088508668353]}]],[[{"lng":[103.814843176229,103.81493848116,103.815078653661,103.815649316987,103.81564841863,103.815646621914,103.815646262559,103.815787514902,103.815725429196,103.815643123616,103.815508163844,103.815364218143,103.815126554997,103.814954754961,103.814878918864,103.814821682632,103.814004172156,103.813999915742,103.81394857765,103.813948768017,103.813918222145,103.813912988295,103.813903731992,103.81355725155,103.813638119596,103.813651687661,103.81397992213,103.814319028893,103.81439127105,103.814452820622,103.814494063292,103.814551569364,103.814614286855,103.814640164692,103.814671433886,103.814699378593,103.814808012622,103.814825590831,103.814843176229],"lat":[1.2876679644099,1.28762330666336,1.28760006550079,1.28757293860313,1.28754625983382,1.28749326404114,1.28748440126311,1.28722602520744,1.28672428315636,1.28662100411692,1.28648037443669,1.28641733919026,1.28631369728261,1.28619603817578,1.28610017495047,1.28599309773453,1.28597694872394,1.28598099934168,1.28598192773257,1.28599827322433,1.28599880566161,1.28609835900862,1.28627561444819,1.2867126912996,1.28678838726659,1.28677455058985,1.2870804997439,1.28740317968709,1.2874711884644,1.28753322835204,1.28757989388494,1.2876517913169,1.28774005778972,1.28775850702361,1.28776140122168,1.28774855944664,1.28768444077608,1.28767620394957,1.2876679644099]}]],[[{"lng":[103.888148340047,103.888270547815,103.888284115618,103.888287350326,103.888572101866,103.888594114631,103.888638216621,103.888587177015,103.887512327822,103.887493908,103.887491752238,103.88750514067,103.887465618602,103.887443334943,103.887441987467,103.887471730278,103.887469035827,103.887494015612,103.887594833308,103.887866649281,103.887864763012,103.887921641441,103.887955786459,103.887987594941,103.888012124898,103.888024254654,103.888025691989,103.888130209934,103.888148340047],"lat":[1.32148423019096,1.32149185578641,1.32147657172894,1.32147295420001,1.32148796029043,1.32140810443672,1.32064264956759,1.32055863527285,1.32049499183875,1.32051769178529,1.3205529620382,1.32055332349033,1.32121034498113,1.3212304223558,1.32124670094171,1.32128061394878,1.3213363228452,1.32133785971651,1.3213441880523,1.32152433141857,1.32155598420845,1.32155914822603,1.32156059445341,1.32154829439573,1.32152450907316,1.32149249431059,1.32147657746825,1.32148309923384,1.32148423019096]}]],[[{"lng":[103.87761161695,103.877633786013,103.878273876407,103.878305774489,103.878496607351,103.878266576837,103.878243483925,103.878212753235,103.878036276417,103.877996829718,103.877791778412,103.87776113753,103.877733641555,103.877714502606,103.877708213444,103.877706147006,103.877672365245,103.877668771435,103.877654845463,103.877652599337,103.877636696699,103.877624926949,103.877599051462,103.877584856317,103.877567785593,103.87756535975,103.877533643867,103.877524300109,103.877518100891,103.877508307666,103.877498514439,103.877493034049,103.877483690171,103.87761161695],"lat":[1.31093087343346,1.31093494267889,1.31105243708154,1.31103027957633,1.30997669154197,1.30985569173981,1.30984321192692,1.30982403995453,1.30971416284722,1.30968965527817,1.30954143361187,1.30951927722929,1.30949639729866,1.30950354211898,1.30954188728418,1.30955454842344,1.30976219110519,1.30978398635266,1.30987080558866,1.30988473284132,1.30997960095604,1.31004977984743,1.31020388401125,1.31031322192651,1.31040989879033,1.31042346430029,1.31058760701247,1.31065299272853,1.31069676407823,1.31075120699227,1.31080555946982,1.31084869775157,1.31090739117043,1.31093087343346]}]]],["X1","X2","X3","X4","X5","X6","X7","X8","X9","X10","X11","X12","X13","X14","X15","X16","X17","X18","X19","X20","X21","X22","X23","X24","X25","X26","X27","X28","X29","X30","X31","X32","X33","X34","X35"],"sg_spt$geometry",{"interactive":false,"className":"","pane":"tmap401","stroke":true,"color":["#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00","#00FF00"],"weight":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"opacity":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"fill":true,"fillColor":["#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9"],"fillOpacity":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],"dashArray":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"fitBounds":[1.282979392178585,103.6879784979685,1.438852332537055,103.9577511389515,[]],"limits":{"lat":[1.28597694872394,1.4358547759917],"lng":[103.693166433372,103.952563203548]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What do the commands mean?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>tmap</code> package is used for creating thematic maps.</li>
+<li>The following commands create a base map and an interactive view:
+<ul>
+<li><code>tm_shape</code>: Specifies the spatial data object for the base layer and creates polygons on top of the map layer.</li>
+<li><code>tmap_mode</code>: Sets the created map to be an interactive map.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="working-with-csv-data" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="working-with-csv-data"><span class="header-section-number">2.5</span> Working with csv data</h2>
+<p>We will need to install the package <code>spData</code> and load our csv dataset as an <code>sf</code> object. When we look at sf class datasets, we need to identify the difference between attributes and features.</p>
+<section id="attributes-vs-features" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="attributes-vs-features"><span class="header-section-number">2.5.1</span> Attributes vs Features</h3>
+<p>Attribute data is “non-spatial” information associated with geographic (geometry) data.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Geometry Data (Spatial)</th>
+<th>Attribute Data (Non-Spatial)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A bus stop’s position would typically be represented by latitude and longitude coordinates (geometry data).</td>
+<td>The name of the bus stop is an attribute of the feature (to use Simple Features terminology) that bears no relation to its geometry.</td>
+</tr>
+<tr class="even">
+<td>The position of a specific grid cell in raster data.</td>
+<td>The elevation value (attribute) for that specific grid cell.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="feature-types-supported-by-sf" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="feature-types-supported-by-sf"><span class="header-section-number">2.5.2</span> Feature types supported by sf</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/W1_feature_sf.png" class="img-fluid figure-img"></p>
+<figcaption>Feature types supported by <code>sf</code></figcaption>
+</figure>
+</div>
+<section id="geometry-column" class="level4" data-number="2.5.2.1">
+<h4 data-number="2.5.2.1" class="anchored" data-anchor-id="geometry-column"><span class="header-section-number">2.5.2.1</span> Geometry Column</h4>
+<p>The geometry column gives the <code>sf</code> object its “spatial awareness”. It is a list column that contains all the coordinates of the country polygons. When we strp the geometry data from an <code>sf</code> column, it reduces to a typical <code>data.frame</code>. We can observe this through the following example:</p>
+<section id="step-1-loading-and-inspecting-the-world-dataset" class="level5" data-number="2.5.2.1.1">
+<h5 data-number="2.5.2.1.1" class="anchored" data-anchor-id="step-1-loading-and-inspecting-the-world-dataset"><span class="header-section-number">2.5.2.1.1</span> Step 1: Loading and inspecting the “world” dataset</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>world <span class="ot">=</span> <span class="fu">st_read</span>(<span class="fu">system.file</span>(<span class="st">"shapes/world.gpkg"</span>, <span class="at">package=</span><span class="st">"spData"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `world' from data source 
+  `/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/library/spData/shapes/world.gpkg' 
+  using driver `GPKG'
+Simple feature collection with 177 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>world</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 177 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+Geodetic CRS:  WGS 84
+First 10 features:
+   iso_a2        name_long     continent region_un          subregion
+1      FJ             Fiji       Oceania   Oceania          Melanesia
+2      TZ         Tanzania        Africa    Africa     Eastern Africa
+3      EH   Western Sahara        Africa    Africa    Northern Africa
+4      CA           Canada North America  Americas   Northern America
+5      US    United States North America  Americas   Northern America
+6      KZ       Kazakhstan          Asia      Asia       Central Asia
+7      UZ       Uzbekistan          Asia      Asia       Central Asia
+8      PG Papua New Guinea       Oceania   Oceania          Melanesia
+9      ID        Indonesia          Asia      Asia South-Eastern Asia
+10     AR        Argentina South America  Americas      South America
+                type    area_km2       pop  lifeExp gdpPercap
+1  Sovereign country    19289.97    885806 69.96000  8222.254
+2  Sovereign country   932745.79  52234869 64.16300  2402.099
+3      Indeterminate    96270.60        NA       NA        NA
+4  Sovereign country 10036042.98  35535348 81.95305 43079.143
+5            Country  9510743.74 318622525 78.84146 51921.985
+6  Sovereign country  2729810.51  17288285 71.62000 23587.338
+7  Sovereign country   461410.26  30757700 71.03900  5370.866
+8  Sovereign country   464520.07   7755785 65.23000  3709.082
+9  Sovereign country  1819251.33 255131116 68.85600 10003.089
+10 Sovereign country  2784468.59  42981515 76.25200 18797.548
+                             geom
+1  MULTIPOLYGON (((-180 -16.55...
+2  MULTIPOLYGON (((33.90371 -0...
+3  MULTIPOLYGON (((-8.66559 27...
+4  MULTIPOLYGON (((-132.71 54....
+5  MULTIPOLYGON (((-171.7317 6...
+6  MULTIPOLYGON (((87.35997 49...
+7  MULTIPOLYGON (((55.96819 41...
+8  MULTIPOLYGON (((141.0002 -2...
+9  MULTIPOLYGON (((104.37 -1.0...
+10 MULTIPOLYGON (((-68.63401 -...</code></pre>
+</div>
+</div>
+</section>
+<section id="step-2-inspecting-the-dataset" class="level5" data-number="2.5.2.1.2">
+<h5 data-number="2.5.2.1.2" class="anchored" data-anchor-id="step-2-inspecting-the-dataset"><span class="header-section-number">2.5.2.1.2</span> Step 2: Inspecting the dataset</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">st_is_valid</span>(world))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+TRUE 
+ 177 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(world)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(world) <span class="co"># 177 features, 11 attributes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 177  11</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(world)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "iso_a2"    "name_long" "continent" "region_un" "subregion" "type"     
+ [7] "area_km2"  "pop"       "lifeExp"   "gdpPercap" "geom"     </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(world)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    iso_a2           name_long          continent          region_un        
+ Length:177         Length:177         Length:177         Length:177        
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+  subregion             type              area_km2             pop           
+ Length:177         Length:177         Min.   :    2417   Min.   :5.630e+04  
+ Class :character   Class :character   1st Qu.:   46185   1st Qu.:3.755e+06  
+ Mode  :character   Mode  :character   Median :  185004   Median :1.040e+07  
+                                       Mean   :  832558   Mean   :4.282e+07  
+                                       3rd Qu.:  621860   3rd Qu.:3.075e+07  
+                                       Max.   :17018507   Max.   :1.364e+09  
+                                                          NA's   :10         
+    lifeExp        gdpPercap                   geom    
+ Min.   :50.62   Min.   :   597.1   MULTIPOLYGON :177  
+ 1st Qu.:64.96   1st Qu.:  3752.4   epsg:4326    :  0  
+ Median :72.87   Median : 10734.1   +proj=long...:  0  
+ Mean   :70.85   Mean   : 17106.0                      
+ 3rd Qu.:76.78   3rd Qu.: 24232.7                      
+ Max.   :83.59   Max.   :120860.1                      
+ NA's   :10      NA's   :17                            </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(world)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -18.28799 xmax: 180 ymax: 83.23324
+Geodetic CRS:  WGS 84
+  iso_a2      name_long     continent region_un        subregion
+1     FJ           Fiji       Oceania   Oceania        Melanesia
+2     TZ       Tanzania        Africa    Africa   Eastern Africa
+3     EH Western Sahara        Africa    Africa  Northern Africa
+4     CA         Canada North America  Americas Northern America
+5     US  United States North America  Americas Northern America
+6     KZ     Kazakhstan          Asia      Asia     Central Asia
+               type    area_km2       pop  lifeExp gdpPercap
+1 Sovereign country    19289.97    885806 69.96000  8222.254
+2 Sovereign country   932745.79  52234869 64.16300  2402.099
+3     Indeterminate    96270.60        NA       NA        NA
+4 Sovereign country 10036042.98  35535348 81.95305 43079.143
+5           Country  9510743.74 318622525 78.84146 51921.985
+6 Sovereign country  2729810.51  17288285 71.62000 23587.338
+                            geom
+1 MULTIPOLYGON (((-180 -16.55...
+2 MULTIPOLYGON (((33.90371 -0...
+3 MULTIPOLYGON (((-8.66559 27...
+4 MULTIPOLYGON (((-132.71 54....
+5 MULTIPOLYGON (((-171.7317 6...
+6 MULTIPOLYGON (((87.35997 49...</code></pre>
+</div>
+</div>
+</section>
+<section id="step-3-removing-geometry-column-from-dataset" class="level5" data-number="2.5.2.1.3">
+<h5 data-number="2.5.2.1.3" class="anchored" data-anchor-id="step-3-removing-geometry-column-from-dataset"><span class="header-section-number">2.5.2.1.3</span> Step 3: Removing geometry column from dataset</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>world<span class="sc">$</span>geom</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Geometry set for 177 features 
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+Geodetic CRS:  WGS 84
+First 5 geometries:</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTIPOLYGON (((-180 -16.55522, -179.9174 -16.5...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTIPOLYGON (((33.90371 -0.95, 31.86617 -1.027...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTIPOLYGON (((-8.66559 27.65643, -8.817828 27...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTIPOLYGON (((-132.71 54.04001, -133.18 54.16...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>MULTIPOLYGON (((-171.7317 63.78252, -171.7911 6...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>world_df <span class="ot">=</span> <span class="fu">st_drop_geometry</span>(world)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(world_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(world_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  iso_a2      name_long     continent region_un        subregion
+1     FJ           Fiji       Oceania   Oceania        Melanesia
+2     TZ       Tanzania        Africa    Africa   Eastern Africa
+3     EH Western Sahara        Africa    Africa  Northern Africa
+4     CA         Canada North America  Americas Northern America
+5     US  United States North America  Americas Northern America
+6     KZ     Kazakhstan          Asia      Asia     Central Asia
+               type    area_km2       pop  lifeExp gdpPercap
+1 Sovereign country    19289.97    885806 69.96000  8222.254
+2 Sovereign country   932745.79  52234869 64.16300  2402.099
+3     Indeterminate    96270.60        NA       NA        NA
+4 Sovereign country 10036042.98  35535348 81.95305 43079.143
+5           Country  9510743.74 318622525 78.84146 51921.985
+6 Sovereign country  2729810.51  17288285 71.62000 23587.338</code></pre>
+</div>
+</div>
+</section>
+<section id="initial-plots" class="level5" data-number="2.5.2.1.4">
+<h5 data-number="2.5.2.1.4" class="anchored" data-anchor-id="initial-plots"><span class="header-section-number">2.5.2.1.4</span> Initial plots</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot(world)</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(world[<span class="dv">3</span><span class="sc">:</span><span class="dv">6</span>]) <span class="co"># plot of the world for attributes 3 to 6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="basic-plot-of-the-countries-and-continents-based-on-column-name" class="level5" data-number="2.5.2.1.5">
+<h5 data-number="2.5.2.1.5" class="anchored" data-anchor-id="basic-plot-of-the-countries-and-continents-based-on-column-name"><span class="header-section-number">2.5.2.1.5</span> Basic plot of the countries and continents based on column name</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(world[<span class="fu">c</span>(<span class="st">"name_long"</span>, <span class="st">"continent"</span>)]) <span class="co"># identify the columns using concatenate function to list into an array</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="spatial-dataset-manipulation" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="spatial-dataset-manipulation"><span class="header-section-number">2.5.3</span> Spatial dataset manipulation</h3>
+<p>In this section we will see some important ways to manipulate a spatial dataset. Most of these commands can be applied to any dataset in general.</p>
+<section id="subsetting-using-base-r-functions-or-subset" class="level4" data-number="2.5.3.1">
+<h4 data-number="2.5.3.1" class="anchored" data-anchor-id="subsetting-using-base-r-functions-or-subset"><span class="header-section-number">2.5.3.1</span> Subsetting using base R functions [] or subset()</h4>
+<p>The following code chunk shows how to subset based on columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>world[, <span class="dv">7</span><span class="sc">:</span><span class="dv">10</span>] <span class="co"># Extract columns 7 to 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 177 features and 4 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+Geodetic CRS:  WGS 84
+First 10 features:
+      area_km2       pop  lifeExp gdpPercap                           geom
+1     19289.97    885806 69.96000  8222.254 MULTIPOLYGON (((-180 -16.55...
+2    932745.79  52234869 64.16300  2402.099 MULTIPOLYGON (((33.90371 -0...
+3     96270.60        NA       NA        NA MULTIPOLYGON (((-8.66559 27...
+4  10036042.98  35535348 81.95305 43079.143 MULTIPOLYGON (((-132.71 54....
+5   9510743.74 318622525 78.84146 51921.985 MULTIPOLYGON (((-171.7317 6...
+6   2729810.51  17288285 71.62000 23587.338 MULTIPOLYGON (((87.35997 49...
+7    461410.26  30757700 71.03900  5370.866 MULTIPOLYGON (((55.96819 41...
+8    464520.07   7755785 65.23000  3709.082 MULTIPOLYGON (((141.0002 -2...
+9   1819251.33 255131116 68.85600 10003.089 MULTIPOLYGON (((104.37 -1.0...
+10  2784468.59  42981515 76.25200 18797.548 MULTIPOLYGON (((-68.63401 -...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(world[, <span class="dv">7</span><span class="sc">:</span><span class="dv">10</span>]) <span class="co"># numerical summary of the columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    area_km2             pop               lifeExp        gdpPercap       
+ Min.   :    2417   Min.   :5.630e+04   Min.   :50.62   Min.   :   597.1  
+ 1st Qu.:   46185   1st Qu.:3.755e+06   1st Qu.:64.96   1st Qu.:  3752.4  
+ Median :  185004   Median :1.040e+07   Median :72.87   Median : 10734.1  
+ Mean   :  832558   Mean   :4.282e+07   Mean   :70.85   Mean   : 17106.0  
+ 3rd Qu.:  621860   3rd Qu.:3.075e+07   3rd Qu.:76.78   3rd Qu.: 24232.7  
+ Max.   :17018507   Max.   :1.364e+09   Max.   :83.59   Max.   :120860.1  
+                    NA's   :10          NA's   :10      NA's   :17        
+            geom    
+ MULTIPOLYGON :177  
+ epsg:4326    :  0  
+ +proj=long...:  0  
+                    
+                    
+                    
+                    </code></pre>
+</div>
+</div>
+<p>The following code chunk allows subsetting based on certain criterion: lad area more than 5 million square km.</p>
+<section id="method-1" class="level5" data-number="2.5.3.1.1">
+<h5 data-number="2.5.3.1.1" class="anchored" data-anchor-id="method-1"><span class="header-section-number">2.5.3.1.1</span> Method 1</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>l_area <span class="ot">=</span> world<span class="sc">$</span>area_km2 <span class="sc">&gt;</span> <span class="dv">5000000</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(l_area)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "logical"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(l_area)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>l_area
+FALSE  TRUE 
+  170     7 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">big_countries =</span> world[l_area, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 7 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.23324
+Geodetic CRS:  WGS 84
+    iso_a2          name_long     continent  region_un
+4       CA             Canada North America   Americas
+5       US      United States North America   Americas
+19      RU Russian Federation        Europe     Europe
+30      BR             Brazil South America   Americas
+138     AU          Australia       Oceania    Oceania
+140     CN              China          Asia       Asia
+160     AQ         Antarctica    Antarctica Antarctica
+                    subregion              type area_km2        pop  lifeExp
+4            Northern America Sovereign country 10036043   35535348 81.95305
+5            Northern America           Country  9510744  318622525 78.84146
+19             Eastern Europe Sovereign country 17018507  143819666 70.74366
+30              South America Sovereign country  8508557  204213133 75.04200
+138 Australia and New Zealand           Country  7687614   23504138 82.30000
+140              Eastern Asia           Country  9409830 1364270000 75.93200
+160                Antarctica     Indeterminate 12335956         NA       NA
+    gdpPercap                           geom
+4    43079.14 MULTIPOLYGON (((-132.71 54....
+5    51921.98 MULTIPOLYGON (((-171.7317 6...
+19   25284.59 MULTIPOLYGON (((180 70.8322...
+30   15374.26 MULTIPOLYGON (((-53.37366 -...
+138  43547.20 MULTIPOLYGON (((126.1487 -3...
+140  12758.65 MULTIPOLYGON (((80.25999 42...
+160        NA MULTIPOLYGON (((-180 -89.9,...</code></pre>
+</div>
+</div>
+</section>
+<section id="method-2" class="level5" data-number="2.5.3.1.2">
+<h5 data-number="2.5.3.1.2" class="anchored" data-anchor-id="method-2"><span class="header-section-number">2.5.3.1.2</span> Method 2</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">big_countries =</span> <span class="fu">subset</span>(world, area_km2 <span class="sc">&gt;</span> <span class="dv">5000000</span>)) <span class="co"># method 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 7 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.23324
+Geodetic CRS:  WGS 84
+    iso_a2          name_long     continent  region_un
+4       CA             Canada North America   Americas
+5       US      United States North America   Americas
+19      RU Russian Federation        Europe     Europe
+30      BR             Brazil South America   Americas
+138     AU          Australia       Oceania    Oceania
+140     CN              China          Asia       Asia
+160     AQ         Antarctica    Antarctica Antarctica
+                    subregion              type area_km2        pop  lifeExp
+4            Northern America Sovereign country 10036043   35535348 81.95305
+5            Northern America           Country  9510744  318622525 78.84146
+19             Eastern Europe Sovereign country 17018507  143819666 70.74366
+30              South America Sovereign country  8508557  204213133 75.04200
+138 Australia and New Zealand           Country  7687614   23504138 82.30000
+140              Eastern Asia           Country  9409830 1364270000 75.93200
+160                Antarctica     Indeterminate 12335956         NA       NA
+    gdpPercap                           geom
+4    43079.14 MULTIPOLYGON (((-132.71 54....
+5    51921.98 MULTIPOLYGON (((-171.7317 6...
+19   25284.59 MULTIPOLYGON (((180 70.8322...
+30   15374.26 MULTIPOLYGON (((-53.37366 -...
+138  43547.20 MULTIPOLYGON (((126.1487 -3...
+140  12758.65 MULTIPOLYGON (((80.25999 42...
+160        NA MULTIPOLYGON (((-180 -89.9,...</code></pre>
+</div>
+</div>
+<p>Since Antartica is not a country, we will remove it from the dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">big_countries =</span> big_countries[<span class="sc">-</span><span class="dv">7</span>, ]) <span class="co"># remove Antarctica</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 6 features and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -43.6346 xmax: 180 ymax: 83.23324
+Geodetic CRS:  WGS 84
+    iso_a2          name_long     continent region_un                 subregion
+4       CA             Canada North America  Americas          Northern America
+5       US      United States North America  Americas          Northern America
+19      RU Russian Federation        Europe    Europe            Eastern Europe
+30      BR             Brazil South America  Americas             South America
+138     AU          Australia       Oceania   Oceania Australia and New Zealand
+140     CN              China          Asia      Asia              Eastern Asia
+                 type area_km2        pop  lifeExp gdpPercap
+4   Sovereign country 10036043   35535348 81.95305  43079.14
+5             Country  9510744  318622525 78.84146  51921.98
+19  Sovereign country 17018507  143819666 70.74366  25284.59
+30  Sovereign country  8508557  204213133 75.04200  15374.26
+138           Country  7687614   23504138 82.30000  43547.20
+140           Country  9409830 1364270000 75.93200  12758.65
+                              geom
+4   MULTIPOLYGON (((-132.71 54....
+5   MULTIPOLYGON (((-171.7317 6...
+19  MULTIPOLYGON (((180 70.8322...
+30  MULTIPOLYGON (((-53.37366 -...
+138 MULTIPOLYGON (((126.1487 -3...
+140 MULTIPOLYGON (((80.25999 42...</code></pre>
+</div>
+</div>
+<p>In the next chunk, we will extract and highlight Asia (a specific geographic location) in a map. Using [] is one way to subset a dataset. Notice the resulting dataset is also an sf object.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(world<span class="sc">$</span>continent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                 Africa              Antarctica                    Asia 
+                     51                       1                      47 
+                 Europe           North America                 Oceania 
+                     39                      18                       7 
+Seven seas (open ocean)           South America 
+                      1                      13 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>asia <span class="ot">=</span> world[world<span class="sc">$</span>continent <span class="sc">==</span> <span class="st">"Asia"</span>, ] </span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(world[<span class="st">"continent"</span>], <span class="at">reset =</span> F) </span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(asia, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in plot.sf(asia, add = T, col = "black"): ignoring all but the first
+attribute</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-a-country-e.g.-sri-lanka" class="level5" data-number="2.5.3.1.3">
+<h5 data-number="2.5.3.1.3" class="anchored" data-anchor-id="plotting-a-country-e.g.-sri-lanka"><span class="header-section-number">2.5.3.1.3</span> Plotting a country (e.g.&nbsp;Sri Lanka)</h5>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>world<span class="sc">$</span>name_long </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "Fiji"                               
+  [2] "Tanzania"                           
+  [3] "Western Sahara"                     
+  [4] "Canada"                             
+  [5] "United States"                      
+  [6] "Kazakhstan"                         
+  [7] "Uzbekistan"                         
+  [8] "Papua New Guinea"                   
+  [9] "Indonesia"                          
+ [10] "Argentina"                          
+ [11] "Chile"                              
+ [12] "Democratic Republic of the Congo"   
+ [13] "Somalia"                            
+ [14] "Kenya"                              
+ [15] "Sudan"                              
+ [16] "Chad"                               
+ [17] "Haiti"                              
+ [18] "Dominican Republic"                 
+ [19] "Russian Federation"                 
+ [20] "Bahamas"                            
+ [21] "Falkland Islands"                   
+ [22] "Norway"                             
+ [23] "Greenland"                          
+ [24] "French Southern and Antarctic Lands"
+ [25] "Timor-Leste"                        
+ [26] "South Africa"                       
+ [27] "Lesotho"                            
+ [28] "Mexico"                             
+ [29] "Uruguay"                            
+ [30] "Brazil"                             
+ [31] "Bolivia"                            
+ [32] "Peru"                               
+ [33] "Colombia"                           
+ [34] "Panama"                             
+ [35] "Costa Rica"                         
+ [36] "Nicaragua"                          
+ [37] "Honduras"                           
+ [38] "El Salvador"                        
+ [39] "Guatemala"                          
+ [40] "Belize"                             
+ [41] "Venezuela"                          
+ [42] "Guyana"                             
+ [43] "Suriname"                           
+ [44] "France"                             
+ [45] "Ecuador"                            
+ [46] "Puerto Rico"                        
+ [47] "Jamaica"                            
+ [48] "Cuba"                               
+ [49] "Zimbabwe"                           
+ [50] "Botswana"                           
+ [51] "Namibia"                            
+ [52] "Senegal"                            
+ [53] "Mali"                               
+ [54] "Mauritania"                         
+ [55] "Benin"                              
+ [56] "Niger"                              
+ [57] "Nigeria"                            
+ [58] "Cameroon"                           
+ [59] "Togo"                               
+ [60] "Ghana"                              
+ [61] "Côte d'Ivoire"                      
+ [62] "Guinea"                             
+ [63] "Guinea-Bissau"                      
+ [64] "Liberia"                            
+ [65] "Sierra Leone"                       
+ [66] "Burkina Faso"                       
+ [67] "Central African Republic"           
+ [68] "Republic of the Congo"              
+ [69] "Gabon"                              
+ [70] "Equatorial Guinea"                  
+ [71] "Zambia"                             
+ [72] "Malawi"                             
+ [73] "Mozambique"                         
+ [74] "eSwatini"                           
+ [75] "Angola"                             
+ [76] "Burundi"                            
+ [77] "Israel"                             
+ [78] "Lebanon"                            
+ [79] "Madagascar"                         
+ [80] "Palestine"                          
+ [81] "The Gambia"                         
+ [82] "Tunisia"                            
+ [83] "Algeria"                            
+ [84] "Jordan"                             
+ [85] "United Arab Emirates"               
+ [86] "Qatar"                              
+ [87] "Kuwait"                             
+ [88] "Iraq"                               
+ [89] "Oman"                               
+ [90] "Vanuatu"                            
+ [91] "Cambodia"                           
+ [92] "Thailand"                           
+ [93] "Lao PDR"                            
+ [94] "Myanmar"                            
+ [95] "Vietnam"                            
+ [96] "Dem. Rep. Korea"                    
+ [97] "Republic of Korea"                  
+ [98] "Mongolia"                           
+ [99] "India"                              
+[100] "Bangladesh"                         
+[101] "Bhutan"                             
+[102] "Nepal"                              
+[103] "Pakistan"                           
+[104] "Afghanistan"                        
+[105] "Tajikistan"                         
+[106] "Kyrgyzstan"                         
+[107] "Turkmenistan"                       
+[108] "Iran"                               
+[109] "Syria"                              
+[110] "Armenia"                            
+[111] "Sweden"                             
+[112] "Belarus"                            
+[113] "Ukraine"                            
+[114] "Poland"                             
+[115] "Austria"                            
+[116] "Hungary"                            
+[117] "Moldova"                            
+[118] "Romania"                            
+[119] "Lithuania"                          
+[120] "Latvia"                             
+[121] "Estonia"                            
+[122] "Germany"                            
+[123] "Bulgaria"                           
+[124] "Greece"                             
+[125] "Turkey"                             
+[126] "Albania"                            
+[127] "Croatia"                            
+[128] "Switzerland"                        
+[129] "Luxembourg"                         
+[130] "Belgium"                            
+[131] "Netherlands"                        
+[132] "Portugal"                           
+[133] "Spain"                              
+[134] "Ireland"                            
+[135] "New Caledonia"                      
+[136] "Solomon Islands"                    
+[137] "New Zealand"                        
+[138] "Australia"                          
+[139] "Sri Lanka"                          
+[140] "China"                              
+[141] "Taiwan"                             
+[142] "Italy"                              
+[143] "Denmark"                            
+[144] "United Kingdom"                     
+[145] "Iceland"                            
+[146] "Azerbaijan"                         
+[147] "Georgia"                            
+[148] "Philippines"                        
+[149] "Malaysia"                           
+[150] "Brunei Darussalam"                  
+[151] "Slovenia"                           
+[152] "Finland"                            
+[153] "Slovakia"                           
+[154] "Czech Republic"                     
+[155] "Eritrea"                            
+[156] "Japan"                              
+[157] "Paraguay"                           
+[158] "Yemen"                              
+[159] "Saudi Arabia"                       
+[160] "Antarctica"                         
+[161] "Northern Cyprus"                    
+[162] "Cyprus"                             
+[163] "Morocco"                            
+[164] "Egypt"                              
+[165] "Libya"                              
+[166] "Ethiopia"                           
+[167] "Djibouti"                           
+[168] "Somaliland"                         
+[169] "Uganda"                             
+[170] "Rwanda"                             
+[171] "Bosnia and Herzegovina"             
+[172] "Macedonia"                          
+[173] "Serbia"                             
+[174] "Montenegro"                         
+[175] "Kosovo"                             
+[176] "Trinidad and Tobago"                
+[177] "South Sudan"                        </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">sl =</span> world[world<span class="sc">$</span>name_long <span class="sc">==</span> <span class="st">"Sri Lanka"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 1 feature and 10 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 79.69517 ymin: 5.96837 xmax: 81.78796 ymax: 9.824078
+Geodetic CRS:  WGS 84
+    iso_a2 name_long continent region_un     subregion              type
+139     LK Sri Lanka      Asia      Asia Southern Asia Sovereign country
+    area_km2      pop lifeExp gdpPercap                           geom
+139 65370.39 20771000  74.906  10650.39 MULTIPOLYGON (((81.78796 7....</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(asia<span class="sc">$</span>geom, <span class="at">main=</span><span class="st">"Asia"</span>)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(sl), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">add=</span>T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>plot(st_geometry()) gives an outline of the geometry column.</p>
+</section>
+</section>
+<section id="attribute-data-aggregation" class="level4" data-number="2.5.3.2">
+<h4 data-number="2.5.3.2" class="anchored" data-anchor-id="attribute-data-aggregation"><span class="header-section-number">2.5.3.2</span> Attribute data aggregation</h4>
+<p>Aggregation operations summarise datasets by a ‘grouping variable’, typically an attribute column. In the following example, we aggregate the population by continent.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">cont_pop =</span> <span class="fu">aggregate</span>(pop <span class="sc">~</span> continent, <span class="at">FUN =</span> sum, <span class="at">data =</span> world, <span class="at">na.rm =</span> T)); <span class="fu">class</span>(cont_pop) <span class="co"># output is a data.frame</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      continent        pop
+1        Africa 1154946633
+2          Asia 4311408059
+3        Europe  669036256
+4 North America  565028684
+5       Oceania   37757833
+6 South America  412060811</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">cont_pop2 =</span> <span class="fu">aggregate</span>(world[<span class="st">'pop'</span>], <span class="at">by =</span> <span class="fu">list</span>(world<span class="sc">$</span>continent), <span class="at">FUN =</span> sum, <span class="at">na.rm =</span> T)); <span class="fu">class</span>(cont_pop2) <span class="co"># results in an sf output</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 8 features and 2 fields
+Attribute-geometry relationships: aggregate (1), identity (1)
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+Geodetic CRS:  WGS 84
+                  Group.1        pop                       geometry
+1                  Africa 1154946633 MULTIPOLYGON (((-11.43878 6...
+2              Antarctica          0 MULTIPOLYGON (((-61.13898 -...
+3                    Asia 4311408059 MULTIPOLYGON (((48.67923 14...
+4                  Europe  669036256 MULTIPOLYGON (((-53.55484 2...
+5           North America  565028684 MULTIPOLYGON (((-155.2222 1...
+6                 Oceania   37757833 MULTIPOLYGON (((147.9141 -4...
+7 Seven seas (open ocean)          0 POLYGON ((68.935 -48.625, 6...
+8           South America  412060811 MULTIPOLYGON (((-68.63999 -...</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "sf"         "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># (cont_pop2 = aggregate(world$pop, by = list(world$continent), FUN = sum, na.rm = T)); class(cont_pop2)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="attribute-joining-using-key-variable" class="level4" data-number="2.5.3.3">
+<h4 data-number="2.5.3.3" class="anchored" data-anchor-id="attribute-joining-using-key-variable"><span class="header-section-number">2.5.3.3</span> Attribute joining using “key variable”</h4>
+<p>The idea is to join data from different sources. This is useful when we want to “give” spatial awareness to a dataset. In the following example, we will use the “coffee_data” dataset from <code>spData</code> and join that to the “world” dataset using the key variable “name_long”.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>To access larger datasets in this package, install the spDataLarge
+package with: `install.packages('spDataLarge',
+repos='https://nowosad.github.io/drat/', type='source')`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'spData'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked _by_ '.GlobalEnv':
+
+    world</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(coffee_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  name_long         coffee_production_2016 coffee_production_2017
+ Length:47          Min.   :   1.0         Min.   :   1.00       
+ Class :character   1st Qu.:   3.0         1st Qu.:   3.75       
+ Mode  :character   Median :  36.5         Median :  40.00       
+                    Mean   : 261.3         Mean   : 250.53       
+                    3rd Qu.: 140.2         3rd Qu.: 178.75       
+                    Max.   :3277.0         Max.   :2786.00       
+                    NA's   :9              NA's   :11            </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(coffee_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "tbl_df"     "tbl"        "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co"># left join</span></span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>(<span class="at">world_coffee =</span> <span class="fu">left_join</span>(world, coffee_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(name_long)`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 177 features and 12 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+Geodetic CRS:  WGS 84
+First 10 features:
+   iso_a2        name_long     continent region_un          subregion
+1      FJ             Fiji       Oceania   Oceania          Melanesia
+2      TZ         Tanzania        Africa    Africa     Eastern Africa
+3      EH   Western Sahara        Africa    Africa    Northern Africa
+4      CA           Canada North America  Americas   Northern America
+5      US    United States North America  Americas   Northern America
+6      KZ       Kazakhstan          Asia      Asia       Central Asia
+7      UZ       Uzbekistan          Asia      Asia       Central Asia
+8      PG Papua New Guinea       Oceania   Oceania          Melanesia
+9      ID        Indonesia          Asia      Asia South-Eastern Asia
+10     AR        Argentina South America  Americas      South America
+                type    area_km2       pop  lifeExp gdpPercap
+1  Sovereign country    19289.97    885806 69.96000  8222.254
+2  Sovereign country   932745.79  52234869 64.16300  2402.099
+3      Indeterminate    96270.60        NA       NA        NA
+4  Sovereign country 10036042.98  35535348 81.95305 43079.143
+5            Country  9510743.74 318622525 78.84146 51921.985
+6  Sovereign country  2729810.51  17288285 71.62000 23587.338
+7  Sovereign country   461410.26  30757700 71.03900  5370.866
+8  Sovereign country   464520.07   7755785 65.23000  3709.082
+9  Sovereign country  1819251.33 255131116 68.85600 10003.089
+10 Sovereign country  2784468.59  42981515 76.25200 18797.548
+   coffee_production_2016 coffee_production_2017                           geom
+1                      NA                     NA MULTIPOLYGON (((-180 -16.55...
+2                      81                     66 MULTIPOLYGON (((33.90371 -0...
+3                      NA                     NA MULTIPOLYGON (((-8.66559 27...
+4                      NA                     NA MULTIPOLYGON (((-132.71 54....
+5                      NA                     NA MULTIPOLYGON (((-171.7317 6...
+6                      NA                     NA MULTIPOLYGON (((87.35997 49...
+7                      NA                     NA MULTIPOLYGON (((55.96819 41...
+8                     114                     74 MULTIPOLYGON (((141.0002 -2...
+9                     742                    360 MULTIPOLYGON (((104.37 -1.0...
+10                     NA                     NA MULTIPOLYGON (((-68.63401 -...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(world_coffee[<span class="st">"coffee_production_2016"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="introduction-to-R_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co"># inner join</span></span>
+<span id="cb113-2"><a href="#cb113-2" aria-hidden="true" tabindex="-1"></a>(<span class="at">world_coffee2 =</span> <span class="fu">inner_join</span>(world, coffee_data)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining with `by = join_by(name_long)`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 45 features and 12 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -117.1278 ymin: -33.76838 xmax: 156.02 ymax: 35.49401
+Geodetic CRS:  WGS 84
+First 10 features:
+   iso_a2          name_long     continent region_un          subregion
+1      TZ           Tanzania        Africa    Africa     Eastern Africa
+2      PG   Papua New Guinea       Oceania   Oceania          Melanesia
+3      ID          Indonesia          Asia      Asia South-Eastern Asia
+4      KE              Kenya        Africa    Africa     Eastern Africa
+5      DO Dominican Republic North America  Americas          Caribbean
+6      TL        Timor-Leste          Asia      Asia South-Eastern Asia
+7      MX             Mexico North America  Americas    Central America
+8      BR             Brazil South America  Americas      South America
+9      BO            Bolivia South America  Americas      South America
+10     PE               Peru South America  Americas      South America
+                type   area_km2       pop lifeExp gdpPercap
+1  Sovereign country  932745.79  52234869  64.163  2402.099
+2  Sovereign country  464520.07   7755785  65.230  3709.082
+3  Sovereign country 1819251.33 255131116  68.856 10003.089
+4  Sovereign country  590836.91  46024250  66.242  2753.236
+5  Sovereign country   48157.87  10405844  73.483 12663.042
+6  Sovereign country   14714.93   1212814  68.285  6262.906
+7  Sovereign country 1969480.31 124221600  76.753 16622.597
+8  Sovereign country 8508557.09 204213133  75.042 15374.262
+9  Sovereign country 1085269.60  10562159  68.357  6324.827
+10 Sovereign country 1309699.64  30973354  74.518 11547.834
+   coffee_production_2016 coffee_production_2017                           geom
+1                      81                     66 MULTIPOLYGON (((33.90371 -0...
+2                     114                     74 MULTIPOLYGON (((141.0002 -2...
+3                     742                    360 MULTIPOLYGON (((104.37 -1.0...
+4                      60                     50 MULTIPOLYGON (((39.20222 -4...
+5                       1                     NA MULTIPOLYGON (((-71.7083 18...
+6                      14                      2 MULTIPOLYGON (((124.9687 -8...
+7                     151                    220 MULTIPOLYGON (((-117.1278 3...
+8                    3277                   2786 MULTIPOLYGON (((-53.37366 -...
+9                       3                      4 MULTIPOLYGON (((-69.52968 -...
+10                    585                    625 MULTIPOLYGON (((-69.89364 -...</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Notice the joining is done using the shared “key” variable “name_long”. By default, <code>dplyr</code> uses all variables with matching names. In this case, both world_coffee and world objects contained a variable called name_long, explaining the message Joining, by = “name_long”. Where variable names are not the same, we have two options: * 1. Rename the key variable in one of the objects so they match, or * 2. Use the by argument to specify the joining variables.</p>
+<p>The difference between the two functions is that <code>left_join()</code> fully preserves the features of the left dataset while <code>inner_join()</code> will find the common elements belonging to both datasets. We may choose the desired function based on the final dataset we need.</p>
+</div>
+</div>
+</section>
+<section id="create-new-attributes" class="level4" data-number="2.5.3.4">
+<h4 data-number="2.5.3.4" class="anchored" data-anchor-id="create-new-attributes"><span class="header-section-number">2.5.3.4</span> Create new attributes</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a>world_coffee<span class="sc">$</span>prod_yoy <span class="ot">=</span> (world_coffee<span class="sc">$</span>coffee_production_2017<span class="sc">/</span>world_coffee<span class="sc">$</span>coffee_production_2016 <span class="sc">-</span> <span class="dv">1</span>)<span class="sc">*</span><span class="dv">100</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>world_coffee</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 177 features and 13 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: -180 ymin: -89.9 xmax: 180 ymax: 83.64513
+Geodetic CRS:  WGS 84
+First 10 features:
+   iso_a2        name_long     continent region_un          subregion
+1      FJ             Fiji       Oceania   Oceania          Melanesia
+2      TZ         Tanzania        Africa    Africa     Eastern Africa
+3      EH   Western Sahara        Africa    Africa    Northern Africa
+4      CA           Canada North America  Americas   Northern America
+5      US    United States North America  Americas   Northern America
+6      KZ       Kazakhstan          Asia      Asia       Central Asia
+7      UZ       Uzbekistan          Asia      Asia       Central Asia
+8      PG Papua New Guinea       Oceania   Oceania          Melanesia
+9      ID        Indonesia          Asia      Asia South-Eastern Asia
+10     AR        Argentina South America  Americas      South America
+                type    area_km2       pop  lifeExp gdpPercap
+1  Sovereign country    19289.97    885806 69.96000  8222.254
+2  Sovereign country   932745.79  52234869 64.16300  2402.099
+3      Indeterminate    96270.60        NA       NA        NA
+4  Sovereign country 10036042.98  35535348 81.95305 43079.143
+5            Country  9510743.74 318622525 78.84146 51921.985
+6  Sovereign country  2729810.51  17288285 71.62000 23587.338
+7  Sovereign country   461410.26  30757700 71.03900  5370.866
+8  Sovereign country   464520.07   7755785 65.23000  3709.082
+9  Sovereign country  1819251.33 255131116 68.85600 10003.089
+10 Sovereign country  2784468.59  42981515 76.25200 18797.548
+   coffee_production_2016 coffee_production_2017                           geom
+1                      NA                     NA MULTIPOLYGON (((-180 -16.55...
+2                      81                     66 MULTIPOLYGON (((33.90371 -0...
+3                      NA                     NA MULTIPOLYGON (((-8.66559 27...
+4                      NA                     NA MULTIPOLYGON (((-132.71 54....
+5                      NA                     NA MULTIPOLYGON (((-171.7317 6...
+6                      NA                     NA MULTIPOLYGON (((87.35997 49...
+7                      NA                     NA MULTIPOLYGON (((55.96819 41...
+8                     114                     74 MULTIPOLYGON (((141.0002 -2...
+9                     742                    360 MULTIPOLYGON (((104.37 -1.0...
+10                     NA                     NA MULTIPOLYGON (((-68.63401 -...
+    prod_yoy
+1         NA
+2  -18.51852
+3         NA
+4         NA
+5         NA
+6         NA
+7         NA
+8  -35.08772
+9  -51.48248
+10        NA</code></pre>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-sp_vignette" class="csl-entry" role="listitem">
+Bivand, Roger S., Edzer Pebesma, and Virgilio Gomez-Rubio. n.d. <span>“Sp: Classes and Methods for Spatial Data.”</span> Accessed August 31, 2025. <a href="https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf">https://cran.r-project.org/web/packages/sp/vignettes/intro_sp.pdf</a>.
+</div>
+<div id="ref-brunsdon_comber" class="csl-entry" role="listitem">
+Brunsdon, Chris, and Lex Comber. n.d. <span>“An Introduction to Sp and Sf: The Sf Revolution.”</span> Accessed August 31, 2025. <a href="https://bookdown.org/lexcomber/brunsdoncomber2e/Ch3.html">https://bookdown.org/lexcomber/brunsdoncomber2e/Ch3.html</a>.
+</div>
+<div id="ref-epsg_io" class="csl-entry" role="listitem">
+<span>“Coordinate Systems Worldwide.”</span> n.d. Accessed August 31, 2025. <a href="https://epsg.io">https://epsg.io</a>.
+</div>
+<div id="ref-mgimond_feature" class="csl-entry" role="listitem">
+Gimond, M. n.d. <span>“Feature Representation.”</span> Accessed August 31, 2025. <a href="https://mgimond.github.io/Spatial/feature-representation.html">https://mgimond.github.io/Spatial/feature-representation.html</a>.
+</div>
+<div id="ref-geocompr_class" class="csl-entry" role="listitem">
+Lovelace, Robin. n.d. <span>“Spatial Classes.”</span> Accessed August 31, 2025. <a href="https://geocompr.robinlovelace.net/spatial-class.html">https://geocompr.robinlovelace.net/spatial-class.html</a>.
+</div>
+<div id="ref-lovelace2022geocomputation" class="csl-entry" role="listitem">
+Lovelace, Robin, Jakub Nowosad, and Jannes Muenchow. 2022. <em>Geocomputation with r</em>. <a href="https://geocompr.robinlovelace.net">https://geocompr.robinlovelace.net</a>.
+</div>
+<div id="ref-schabenberger2005statistical" class="csl-entry" role="listitem">
+Schabenberger, Oliver, and Carol A. Gotway. 2005. <em>Statistical Methods for Spatial Data Analysis</em>. 1st ed. CRC Press.
+</div>
+<div id="ref-sf_vignette" class="csl-entry" role="listitem">
+<span>“Simple Features for r (Sf) Vignette.”</span> n.d. Accessed August 31, 2025. <a href="https://r-spatial.github.io/sf/articles/">https://r-spatial.github.io/sf/articles/</a>.
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./introduction to spatial data.html" class="pagination-link" aria-label="Introduction to Spatial Data">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to Spatial Data</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

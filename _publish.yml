@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: b7a991f9-848b-409b-9abd-9b76aef132c4
+      url: https://econ6027notes.netlify.app

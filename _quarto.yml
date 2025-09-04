@@ -1,0 +1,26 @@
+project:
+  type: book
+
+book:
+  title: "ECON6027 Spatial Econometrics and Data Analysis Notes"
+  author: "Rachel Kheng"
+  date: "last-modified"
+  date-format: "DD MMMM, YYYY"
+  chapters:
+    - index.qmd
+    - introduction_to_spatial_data.qmd
+    - introduction_to_R.qmd
+    - summary.qmd
+    - references.qmd
+
+bibliography: references.bib
+nocite: |
+  @*
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+editor: visual
+

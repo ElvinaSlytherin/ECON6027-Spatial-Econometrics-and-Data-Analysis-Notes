@@ -1,0 +1,9 @@
+# Preface {.unnumbered}
+
+This book was created as a personal study guide to supplement my learning in **ECON6027: Spatial Econometrics and Data Analysis**, taught by Professor Liu Shew Fan. My goal was to consolidate the lecture notes into a single, comprehensive reference to help me prepare for the final exam.
+
+The content is based on Professor Liu's insightful lecture materials, but I've added my own annotations, expanded explanations, and detailed solutions to the in-class exercises. By bringing these elements together, I hope to provide a more integrated and accessible resource for anyone studying spatial econometrics, especially those looking for a clear path through the technical concepts and practical applications.
+
+This book is intended for students who have a foundational understanding of econometrics and want to deepen their knowledge of spatial data analysis. It serves as a companion to the course, providing a structured approach to understanding the key theories and methods presented in class.
+
+I am immensely grateful to Professor Liu Shew Fan for her guidance and expertise. Her lectures were the foundation of this work, and her passion for the subject inspired me to organize my notes in this format.
